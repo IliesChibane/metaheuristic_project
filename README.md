@@ -13,5 +13,3 @@ This project is made by the quadrinomial :
 ### Hammal Ayoub
 
 **SCRUM Board link :** [scrumblr - Projet Meta](http://scrumblr.ca/Projet%20Meta)
-
-<img src="file:///C:/Users/РА/Desktop/scrum%20board.png" title="" alt="" data-align="center">
