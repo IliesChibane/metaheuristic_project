@@ -24,7 +24,7 @@ public class AStar implements Solver {
         this.heuristic.setTargetState(targetState);
     }
 
-    @Override
+    //@Override
     public Node solve() {
         Node currentNode;
         short[][] matrixState = new short[3][3];

@@ -12,7 +12,7 @@ public class MissPlaced implements Heuristic {
         this.targetState = targetState;
     }
 
-    @Override
+    //@Override
     public int score(short[][] state) {
         int cpt = 0;
         for (int i = 0; i < this.targetState.length; ++i)

@@ -31,7 +31,7 @@ public class Node implements Comparable<Node> {
             && this.score == other.score;
     }
 
-    @Override
+    //@Override
     public int compareTo(Node o) {
         return this.getScore() - o.getScore();
     }
