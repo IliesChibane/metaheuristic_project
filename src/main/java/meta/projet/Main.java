@@ -3,13 +3,14 @@ package meta.projet;
 import meta.projet.classesi.solver.AStar;
 import meta.projet.classesi.solver.Node;
 import meta.projet.classesi.solver.heuristic.MissPlaced;
+import meta.projet.classesi.solver.heuristic.MinMoves;
 
 public class Main {
     public static void main(String[] args) {
         AStar solver = new AStar(
             283164705,
             123804765,
-            new MissPlaced()
+            new MinMoves()
         );
 
         Node solution = solver.solve();
