@@ -27,8 +27,7 @@ public class Node implements Comparable<Node> {
 
         Node other = (Node) o;
         
-        return this.state == other.state
-            && this.score == other.score;
+        return this.state == other.state;
     }
 
     //@Override

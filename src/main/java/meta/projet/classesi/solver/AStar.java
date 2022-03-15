@@ -1,6 +1,5 @@
 package meta.projet.classesi.solver;
 
-import meta.projet.classesi.solver.Node;
 import meta.projet.classesi.solver.heuristic.Heuristic;
 
 import java.util.TreeSet;

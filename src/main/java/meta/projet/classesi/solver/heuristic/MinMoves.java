@@ -1,6 +1,5 @@
 package meta.projet.classesi.solver.heuristic;
 
-import meta.projet.classesi.solver.heuristic.Heuristic;
 
 public class MinMoves implements Heuristic {
     private short[][] targetState;

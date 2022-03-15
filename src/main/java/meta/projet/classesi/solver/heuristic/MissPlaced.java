@@ -1,6 +1,5 @@
 package meta.projet.classesi.solver.heuristic;
 
-import meta.projet.classesi.solver.heuristic.Heuristic;
 
 public class MissPlaced implements Heuristic {
     private short[][] targetState;

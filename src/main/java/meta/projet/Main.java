@@ -2,14 +2,14 @@ package meta.projet;
 
 import meta.projet.classesi.solver.AStar;
 import meta.projet.classesi.solver.Node;
-import meta.projet.classesi.solver.heuristic.MissPlaced;
 import meta.projet.classesi.solver.heuristic.MinMoves;
 
 import java.util.LinkedList;
 import java.util.Queue;
+import java.util.Scanner;
 
-import meta.projet.SolverBFS.Codification.*;
-import meta.projet.SolverBFS.Solver.*;
+import meta.projet.classesi.SolverBFS.Codification.*;
+import meta.projet.classesi.SolverBFS.Solver.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -18,10 +18,12 @@ public class Main {
         System.out.println("1) Algorithme A*");
         System.out.println("2) Algorithme BFS");
         System.out.println("3) Algorithme DFS");
-        int choix = 1;
+        int choix;
+        Scanner sc = new Scanner(System.in);
+        choix = sc.nextInt();
         switch(choix)
         {
-            case 0:
+            case 1:
                 AStar solver = new AStar(
                     283164705,
                     123804765,
@@ -42,27 +44,23 @@ public class Main {
                 }
                 break;
 
-            case 1:
+            case 2:
                 int InitialState = 283164705, FinalState = 123804765;
-                Queue<Integer> path = new LinkedList<Integer>();
-                Queue<Integer> vpath = new LinkedList<Integer>();
-                vpath.add(InitialState);
+                Node InitialNode = new Node(InitialState, null, 0, 0);
+                Queue<Node> path = new LinkedList<Node>();
+                Queue<Node> vpath = new LinkedList<Node>();
+                vpath.add(InitialNode);
                 Codification.DisplayAsMAtrix(InitialState);
                 System.out.println();
-                System.out.println("Resolution en utilisant l'algorithme BFS (Breadth first search):");
-                vpath = BfsSolver.BFS(InitialState, FinalState, path, vpath);
-                String FinalPath = "";
-                while(vpath.size() != 0)
-                {
-                    int x = vpath.remove();
-                    FinalPath += (x == FinalState) ? Integer.toString(x) : Integer.toString(x) + " --> ";
-                }
-                System.out.println(FinalPath);
+                vpath = BfsSolver.BFS(InitialNode, FinalState, path, vpath);
                 System.out.println();
+                BfsSolver.DisplayResolutionPath(BfsSolver.ResolutionPath(vpath));
+                BfsSolver.AllNodeVisited(vpath);
                 Codification.DisplayAsMAtrix(FinalState);
                 break;
-            case 2:
+            case 3:
                 break;
         }
+        sc.close();
     }
 }
