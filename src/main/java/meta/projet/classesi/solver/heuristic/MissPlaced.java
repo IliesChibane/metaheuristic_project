@@ -12,14 +12,14 @@ public class MissPlaced implements Heuristic {
     }
 
     //@Override
-    public int score(short[][] state) {
+    public int score(short[][] state, int level) {
         int cpt = 0;
         for (int i = 0; i < this.targetState.length; ++i)
             for (int j = 0; j < this.targetState[0].length; ++j)
                 if (this.targetState[i][j] != 0 
                         && this.targetState[i][j] != state[i][j])
                     cpt = cpt + 1;
-        return cpt;
+        return cpt + level;
     }
 
     public void setTargetState(short[][] targetState) {

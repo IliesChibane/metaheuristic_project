@@ -12,7 +12,7 @@ public class MinMoves implements Heuristic {
     }
 
     //@Override
-    public int score(short[][] state) {
+    public int score(short[][] state, int level) {
         int sum = 0;
         for (int i = 0; i < this.targetState.length; ++i)
             for (int j = 0; j < this.targetState[0].length; ++j)
@@ -24,7 +24,7 @@ public class MinMoves implements Heuristic {
                         for (int l = 0; l < state[0].length; ++l)
                             if (targetState[i][j] == state[k][l])
                                 sum = sum + Math.abs(i - k) + Math.abs(j - l);
-        return sum;
+        return sum + level;
     }
 
     public void setTargetState(short[][] targetState) {

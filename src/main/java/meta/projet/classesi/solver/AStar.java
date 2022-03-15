@@ -23,7 +23,6 @@ public class AStar implements Solver {
         this.heuristic.setTargetState(targetState);
     }
 
-    //@Override
     public Node solve() {
         Node currentNode;
         short[][] matrixState = new short[3][3];
@@ -33,12 +32,11 @@ public class AStar implements Solver {
         this.closed = new HashSet<Node>();  
 
         intToMatrix(this.initialState, matrixState);
-        //printmat(matrixState);
         this.opened.add(
             new Node(
                 this.initialState, 
                 null, 
-                this.heuristic.score(matrixState),
+                this.heuristic.score(matrixState, 0),
                 0
             )
         );
@@ -70,11 +68,6 @@ public class AStar implements Solver {
                     }
                 }
             }
-
-            try {
-                Thread.sleep(3000);
-            } catch (Exception e) {
-            }
         }
 
         return null;
@@ -101,7 +94,7 @@ public class AStar implements Solver {
             children[0] = new Node(
                 matrixToInt(state),
                 parent,
-                this.heuristic.score(state) + parent.getLevel() + 1,
+                this.heuristic.score(state, parent.getLevel() + 1),
                 parent.getLevel() + 1
             );
             state[zi - 1][zj] = state[zi][zj];
@@ -115,7 +108,7 @@ public class AStar implements Solver {
             children[1] = new Node(
                 matrixToInt(state),
                 parent,
-                this.heuristic.score(state) + parent.getLevel() + 1,
+                this.heuristic.score(state, parent.getLevel() + 1),
                 parent.getLevel() + 1
             );
             state[zi + 1][zj] = state[zi][zj];
@@ -129,7 +122,7 @@ public class AStar implements Solver {
             children[2] = new Node(
                 matrixToInt(state),
                 parent,
-                this.heuristic.score(state) + parent.getLevel() + 1,
+                this.heuristic.score(state, parent.getLevel() + 1),
                 parent.getLevel() + 1
             );
             state[zi][zj - 1] = state[zi][zj];
@@ -143,7 +136,7 @@ public class AStar implements Solver {
             children[3] = new Node(
                 matrixToInt(state),
                 parent,
-                this.heuristic.score(state) + parent.getLevel() + 1,
+                this.heuristic.score(state, parent.getLevel() + 1),
                 parent.getLevel() + 1
             );
             state[zi][zj + 1] = state[zi][zj];
