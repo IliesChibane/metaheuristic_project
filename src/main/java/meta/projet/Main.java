@@ -30,10 +30,9 @@ public class Main {
                     new MinMoves()
                 );
         
-                Node solution = solver.solve();
-                if (solution != null) {
+                if (solver.solve()) {
                     System.out.println("done");
-                    for (Node node = solution; node != null; node = node.getParent()) {
+                    for (Node node = solver.getSolution(); node != null; node = node.getParent()) {
                         System.out.print(String.format("%09d ", node.getState()));
                         if (node.getParent() != null)
                             System.out.print("<--");

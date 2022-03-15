@@ -2,15 +2,16 @@ package meta.projet.classesi.solver;
 
 import meta.projet.classesi.solver.heuristic.Heuristic;
 
-import java.util.TreeSet;
 import java.util.HashSet;
+import java.util.PriorityQueue;
 
-public class AStar implements Solver {
+public class AStar extends Solver {
     private int initialState;
     private int finalState;
     private Heuristic heuristic;
 
-    private TreeSet<Node> opened;
+    private Node solution;
+    private PriorityQueue<Node> opened;
     private HashSet<Node> closed;
 
     public AStar(int initialState, int finalState, Heuristic heuristic) {
@@ -23,12 +24,12 @@ public class AStar implements Solver {
         this.heuristic.setTargetState(targetState);
     }
 
-    public Node solve() {
+    public boolean solve() {
         Node currentNode;
         short[][] matrixState = new short[3][3];
         Node[] children;
 
-        this.opened = new TreeSet<Node>();  
+        this.opened = new PriorityQueue<Node>();  
         this.closed = new HashSet<Node>();  
 
         intToMatrix(this.initialState, matrixState);
@@ -43,14 +44,15 @@ public class AStar implements Solver {
 
         // main loop
         while (!this.opened.isEmpty()) {
-            currentNode = this.opened.pollFirst(); 
+            currentNode = this.opened.poll(); 
 
             System.out.println(String.format("Current Node : %09d with level %d and score %d", 
                         currentNode.getState(), currentNode.getLevel(), currentNode.getScore()));
 
             // test if the current node is a goal
             if (currentNode.getState() == this.finalState) {
-                return currentNode;
+                this.solution =  currentNode;
+                return true;
             }
 
             // develop children of current node
@@ -70,7 +72,7 @@ public class AStar implements Solver {
             }
         }
 
-        return null;
+        return false;
     }
 
     public Node[] getChildren(short[][] state, Node parent) {
@@ -166,5 +168,15 @@ public class AStar implements Solver {
             }
         }
         return state;
+    }
+
+    public Node getSolution() {
+        return this.solution;
+    }
+    public Collection<Node> getOpened() {
+        return this.opened;
+    }
+    public Collection<Node> getClosed() {
+        return this.closed;
     }
 }
