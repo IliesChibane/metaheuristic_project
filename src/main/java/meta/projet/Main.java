@@ -51,6 +51,8 @@ public class Main {
                 bfss.DisplayClosed();
                 bfss.DisplayOpened();
                 Codification.DisplayAsMAtrix(FinalState);
+                } else {
+                    System.out.println("No solutions found");
                 }
                 break;
             case 3:

@@ -32,7 +32,7 @@ public class BFS extends Solver {
         Node x = solution;
         while(x != null)
         {
-            FinalPath += (x.getParent() == null) ? Integer.toString(x.getState()) : Integer.toString(x.getState()) + " <-- ";
+            FinalPath += (x.getParent() == null) ? String.format("%09d ", x.getState()) : String.format("%09d ", x.getState()) + " <-- ";
             x = x.getParent();
         }
         System.out.println(FinalPath);
@@ -46,7 +46,7 @@ public class BFS extends Solver {
         Iterator<Node> itr = closed.iterator();
         while(itr.hasNext())
         {
-            FinalPath += Integer.toString(itr.next().getState()) + ", ";
+            FinalPath += String.format("%09d ", itr.next().getState()) + ", ";
         }
         FinalPath = FinalPath.substring(0, FinalPath.length() - 2);  
         System.out.println("{"+FinalPath+"}");
@@ -61,7 +61,7 @@ public class BFS extends Solver {
         while(itr.size() != 0)
         {
             Node x = itr.remove();
-            FinalPath += Integer.toString(x.getState()) + ", ";
+            FinalPath += String.format("%09d ", x.getState()) + ", ";
         }
         FinalPath = FinalPath.substring(0, FinalPath.length() - 2);  
         System.out.println("{"+FinalPath+"}");
