@@ -46,14 +46,14 @@ public class Main {
                 BFS bfss = new BFS(InitialState, FinalState); 
                 Codification.DisplayAsMAtrix(InitialState);
                 System.out.println();
-                boolean b = bfss.solve();
-                System.out.println(b);
-                if(b){
+                if(bfss.solve()){
                 System.out.println();
                 bfss.DisplayResolutionPath();
                 bfss.DisplayClosed();
                 bfss.DisplayOpened();
                 Codification.DisplayAsMAtrix(FinalState);
+                } else {
+                    System.out.println("No solutions found");
                 }
                 break;
             case 3:
