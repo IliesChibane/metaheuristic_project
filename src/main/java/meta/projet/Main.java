@@ -5,7 +5,7 @@ import meta.projet.classesi.solver.DFS;
 import meta.projet.classesi.solver.BFS;
 import meta.projet.classesi.solver.Codification;
 import meta.projet.classesi.solver.Node;
-import meta.projet.classesi.solver.heuristic.MinMoves;
+import meta.projet.classesi.solver.heuristic.MissPlaced;
 
 import java.util.Scanner;
 
@@ -24,9 +24,13 @@ public class Main {
         {
             case 1:
                 AStar solver = new AStar(
-                    283164705,
+<<<<<<< HEAD
+                    183264705,
+=======
+                    238164705,
+>>>>>>> 05d50133cda627b7ee35205235de06d0289f4de0
                     123804765,
-                    new MinMoves()
+                    new MissPlaced()
                 );
                 if (solver.solve()) {
                     System.out.println("done");
@@ -42,7 +46,7 @@ public class Main {
                 break;
 
             case 2:
-                int InitialState = 283164705, FinalState = 123804765;
+                int InitialState = 183264705, FinalState = 123804765;
                 BFS bfss = new BFS(InitialState, FinalState); 
                 Codification.DisplayAsMAtrix(InitialState);
                 System.out.println();
