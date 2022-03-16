@@ -1,6 +1,7 @@
 package meta.projet;
 
 import meta.projet.classesi.solver.AStar;
+import meta.projet.classesi.solver.DFS;
 import meta.projet.classesi.solver.BFS;
 import meta.projet.classesi.solver.Codification;
 import meta.projet.classesi.solver.Node;
@@ -56,6 +57,19 @@ public class Main {
                 }
                 break;
             case 3:
+            int InitState = 183264705, LastState = 123804765;
+            DFS dfss = new DFS(InitState, LastState,4); 
+            Codification.DisplayAsMAtrix(InitState);
+            System.out.println();
+            boolean bool = dfss.solve();
+            System.out.println(bool);
+            if(bool){
+            System.out.println();
+            dfss.DisplayResolutionPath();
+            dfss.DisplayClosed();
+            dfss.DisplayOpened();
+            Codification.DisplayAsMAtrix(LastState);
+            }
                 break;
         }
         sc.close();
