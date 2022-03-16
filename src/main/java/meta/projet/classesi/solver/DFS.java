@@ -16,15 +16,16 @@ public class DFS extends Solver {
     private Node solution;
     private ArrayDeque<Node> opened;
     private HashSet<Node> closed;
-    private int depthMax = 4;
+    private int depthMax;
 
-    public DFS(int initialState, int finalState){
+    public DFS(int initialState, int finalState, int depthMax){
         this.Initial = new Node(initialState,null,0,0);
         this.Final = finalState;
         this.solution = this.Initial;
         this.closed = new HashSet<Node>();
         this.closed.add(this.Initial);
         this.opened = new ArrayDeque<Node>();
+        this.depthMax = depthMax;
     }
 
     public void DisplayResolutionPath()
@@ -155,7 +156,7 @@ public class DFS extends Solver {
         while((opened.size() != 0) &&(!closed.contains(new Node(Final, solution, 0, solution.getLevel()+1))))
         {   solution = opened.removeFirst();//la nouvelle solution c'est la tête de pile
             closed.add(solution);
-            if (solution.getLevel() > depthMax) continue;
+            if (solution.getLevel() > this.depthMax) continue;
             b = solve();
             
             //solution = opened.removeFirst();//retour arrière
