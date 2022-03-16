@@ -23,7 +23,7 @@ public class Main {
         {
             case 1:
                 AStar solver = new AStar(
-                    283164705,
+                    183264705,
                     123804765,
                     new MinMoves()
                 );
@@ -41,7 +41,7 @@ public class Main {
                 break;
 
             case 2:
-                int InitialState = 283164705, FinalState = 123804765;
+                int InitialState = 183264705, FinalState = 123804765;
                 BFS bfss = new BFS(InitialState, FinalState); 
                 Codification.DisplayAsMAtrix(InitialState);
                 System.out.println();
