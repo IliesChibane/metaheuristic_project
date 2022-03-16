@@ -4,7 +4,7 @@ import meta.projet.classesi.solver.AStar;
 import meta.projet.classesi.solver.BFS;
 import meta.projet.classesi.solver.Codification;
 import meta.projet.classesi.solver.Node;
-import meta.projet.classesi.solver.heuristic.MissPlaced;
+import meta.projet.classesi.solver.heuristic.DepthFirst;
 
 import java.util.Scanner;
 
@@ -23,9 +23,10 @@ public class Main {
         {
             case 1:
                 AStar solver = new AStar(
-                    238164705,
+                    182364705,
                     123804765,
-                    new MissPlaced()
+                    new DepthFirst(),
+                    15
                 );
                 if (solver.solve()) {
                     System.out.println("done");
@@ -38,10 +39,11 @@ public class Main {
                 } else {
                     System.out.println("nope");
                 }
+                System.out.println("Opened size : " + solver.getOpened().size() + "\nClosed size : " + solver.getClosed().size());
                 break;
 
             case 2:
-                int InitialState = 283164705, FinalState = 123804765;
+                int InitialState = 182364705, FinalState = 123804765;
                 BFS bfss = new BFS(InitialState, FinalState); 
                 Codification.DisplayAsMAtrix(InitialState);
                 System.out.println();
