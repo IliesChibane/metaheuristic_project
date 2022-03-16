@@ -70,6 +70,14 @@ public class AStar extends Solver {
                         this.opened.add(child);
                     }
                 }
+            } else {
+                System.out.println("Already tested");
+            }
+
+            try {
+                Thread.sleep(3000);
+            } catch (Exception e) {
+                e.printStackTrace();
             }
         }
 
@@ -77,6 +85,7 @@ public class AStar extends Solver {
     }
 
     public Node[] getChildren(short[][] state, Node parent) {
+        Node node;
         Node[] children = new Node[4];
         int zi = 0, zj = 0;
         
@@ -94,12 +103,14 @@ public class AStar extends Solver {
         if (zi != 0) {
             state[zi][zj] = state[zi - 1][zj];
             state[zi - 1][zj] = 0;
-            children[0] = new Node(
+            node = new Node(
                 matrixToInt(state),
                 parent,
                 this.heuristic.score(state, parent.getLevel() + 1),
                 parent.getLevel() + 1
             );
+            if (!this.closed.contains(node))
+                children[0] = node;
             state[zi - 1][zj] = state[zi][zj];
             state[zi][zj] = 0;
         }
@@ -108,12 +119,14 @@ public class AStar extends Solver {
         if (zi != state.length - 1) {
             state[zi][zj] = state[zi + 1][zj];
             state[zi + 1][zj] = 0;
-            children[1] = new Node(
+            node = new Node(
                 matrixToInt(state),
                 parent,
                 this.heuristic.score(state, parent.getLevel() + 1),
                 parent.getLevel() + 1
             );
+            if (!this.closed.contains(node))
+                children[1] = node;
             state[zi + 1][zj] = state[zi][zj];
             state[zi][zj] = 0;
         }
@@ -122,12 +135,14 @@ public class AStar extends Solver {
         if (zj != 0) {
             state[zi][zj] = state[zi][zj - 1];
             state[zi][zj - 1] = 0;
-            children[2] = new Node(
+            node = new Node(
                 matrixToInt(state),
                 parent,
                 this.heuristic.score(state, parent.getLevel() + 1),
                 parent.getLevel() + 1
             );
+            if (!this.closed.contains(node))
+                children[2] = node;
             state[zi][zj - 1] = state[zi][zj];
             state[zi][zj] = 0;
         }
@@ -136,12 +151,14 @@ public class AStar extends Solver {
         if (zj != state.length - 1) {
             state[zi][zj] = state[zi][zj + 1];
             state[zi][zj + 1] = 0;
-            children[3] = new Node(
+            node = new Node(
                 matrixToInt(state),
                 parent,
                 this.heuristic.score(state, parent.getLevel() + 1),
                 parent.getLevel() + 1
             );
+            if (!this.closed.contains(node))
+                children[3] = node;
             state[zi][zj + 1] = state[zi][zj];
             state[zi][zj] = 0;
         }

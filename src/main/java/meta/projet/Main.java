@@ -4,7 +4,7 @@ import meta.projet.classesi.solver.AStar;
 import meta.projet.classesi.solver.BFS;
 import meta.projet.classesi.solver.Codification;
 import meta.projet.classesi.solver.Node;
-import meta.projet.classesi.solver.heuristic.MinMoves;
+import meta.projet.classesi.solver.heuristic.MissPlaced;
 
 import java.util.Scanner;
 
@@ -23,9 +23,9 @@ public class Main {
         {
             case 1:
                 AStar solver = new AStar(
-                    283164705,
+                    238164705,
                     123804765,
-                    new MinMoves()
+                    new MissPlaced()
                 );
                 if (solver.solve()) {
                     System.out.println("done");
