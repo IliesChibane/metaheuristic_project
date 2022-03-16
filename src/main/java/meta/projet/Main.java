@@ -1,15 +1,13 @@
 package meta.projet;
 
 import meta.projet.classesi.solver.AStar;
+import meta.projet.classesi.solver.BFS;
+import meta.projet.classesi.solver.Codification;
 import meta.projet.classesi.solver.Node;
 import meta.projet.classesi.solver.heuristic.MinMoves;
 
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.Scanner;
 
-import meta.projet.classesi.SolverBFS.Codification.*;
-import meta.projet.classesi.SolverBFS.Solver.*;
 
 public class Main {
     public static void main(String[] args) {
@@ -29,7 +27,6 @@ public class Main {
                     123804765,
                     new MinMoves()
                 );
-        
                 if (solver.solve()) {
                     System.out.println("done");
                     for (Node node = solver.getSolution(); node != null; node = node.getParent()) {
@@ -45,17 +42,18 @@ public class Main {
 
             case 2:
                 int InitialState = 283164705, FinalState = 123804765;
-                Node InitialNode = new Node(InitialState, null, 0, 0);
-                Queue<Node> path = new LinkedList<Node>();
-                Queue<Node> vpath = new LinkedList<Node>();
-                vpath.add(InitialNode);
+                BFS bfss = new BFS(InitialState, FinalState); 
                 Codification.DisplayAsMAtrix(InitialState);
                 System.out.println();
-                vpath = BfsSolver.BFS(InitialNode, FinalState, path, vpath);
+                boolean b = bfss.solve();
+                System.out.println(b);
+                if(b){
                 System.out.println();
-                BfsSolver.DisplayResolutionPath(BfsSolver.ResolutionPath(vpath));
-                BfsSolver.AllNodeVisited(vpath);
+                bfss.DisplayResolutionPath();
+                bfss.DisplayClosed();
+                bfss.DisplayOpened();
                 Codification.DisplayAsMAtrix(FinalState);
+                }
                 break;
             case 3:
                 break;

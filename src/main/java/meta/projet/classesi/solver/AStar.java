@@ -2,6 +2,7 @@ package meta.projet.classesi.solver;
 
 import meta.projet.classesi.solver.heuristic.Heuristic;
 
+import java.util.Collection;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 

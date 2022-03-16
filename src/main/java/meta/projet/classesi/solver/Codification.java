@@ -1,4 +1,4 @@
-package meta.projet.classesi.SolverBFS.Codification;
+package meta.projet.classesi.solver;
 
 public class Codification {
     
