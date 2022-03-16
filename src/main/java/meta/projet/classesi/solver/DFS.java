@@ -5,8 +5,6 @@ import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.LinkedList;
-import java.util.Queue;
 
 public class DFS extends Solver {
 
@@ -152,14 +150,12 @@ public class DFS extends Solver {
         }
         
         boolean b = false;
-        //&& solution.getLevel() != depthMax
+        
         while((opened.size() != 0) &&(!closed.contains(new Node(Final, solution, 0, solution.getLevel()+1))))
         {   solution = opened.removeFirst();//la nouvelle solution c'est la tête de pile
             closed.add(solution);
             if (solution.getLevel() > this.depthMax) continue;
             b = solve();
-            
-            //solution = opened.removeFirst();//retour arrière
         }
         
         //DisplayOpened();
