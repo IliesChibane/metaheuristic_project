@@ -70,96 +70,92 @@ public class BFS extends Solver {
 
     @Override
     public boolean solve() {
-        int Allpos = Codification.position(this.solution.getState());
-        int LeftCellVal = (Allpos / 1000) % 10, lcv = 0;
-        int RightCellVal = (Allpos / 100) % 10, rcv = 0;
-        int UpCellVal = (Allpos / 10) % 10, ucv = 0;
-        int DownCellVal = Allpos % 10, dcv = 0;
-        
-        System.out.println("Current Node : "+this.solution.getState()+" Level : "+this.solution.getLevel());
-        System.out.println("Developed children : ");
-        if(LeftCellVal != 0){
-            lcv = Codification.SwitchCell(solution.getState(),LeftCellVal);
-            System.out.println(lcv);
-            if(lcv == Final)
-            {
-                closed.add(new Node(Final, solution, 0, solution.getLevel()+1));
-                return true;
-            }
-            else
-            {
-                Node n = new Node(lcv, solution, 0, solution.getLevel()+1);
-                if(!closed.contains(n)){ 
-                
-                    opened.add(n);
-                    closed.add(n);
-                }
-            }
-        }
-        if(RightCellVal != 0){
-            rcv = Codification.SwitchCell(solution.getState(),RightCellVal);
-            System.out.println(rcv);
-            if(rcv == Final)
-            {
-                closed.add(new Node(Final, solution, 0, solution.getLevel()+1));
-                return true;
-            }
-            else
-            {
-                Node n = new Node(rcv, solution, 0, solution.getLevel()+1);
-                if(!closed.contains(n)){
-                    opened.add(n);
-                    closed.add(n);
-                }
-            }
-        }
-        
-        if(UpCellVal != 0){
-            ucv = Codification.SwitchCell(solution.getState(),UpCellVal);
-            System.out.println(ucv);
-            if(ucv == Final)
-            {
-                closed.add(new Node(Final, solution, 0, solution.getLevel()+1));
-                return true;
-            }
-            else
-            {
-                Node n = new Node(ucv, solution, 0, solution.getLevel()+1);
-                if(!closed.contains(n)){
-                    opened.add(n);
-                    closed.add(n);
-                }
-            }
-        }
-
-        if(DownCellVal != 0)
-        {
-            dcv = Codification.SwitchCell(solution.getState(),DownCellVal);
-            System.out.println(dcv);
-            if(dcv == Final)
-            {
-                closed.add(new Node(Final, solution, 0, solution.getLevel()+1));
-                return true;
-            }
-            else
-            {
-                Node n = new Node(dcv, solution, 0, solution.getLevel()+1);
-                if(!closed.contains(n)){
-                    opened.add(n);
-                    closed.add(n);
-                }
-            }
-        }
-        
-        boolean b = false;
-        while((opened.size() != 0)&&(!closed.contains(new Node(Final, solution, 0, solution.getLevel()+1))))
-        {
-            solution = opened.remove();
+        do {
+            int Allpos = Codification.position(this.solution.getState());
+            int LeftCellVal = (Allpos / 1000) % 10, lcv = 0;
+            int RightCellVal = (Allpos / 100) % 10, rcv = 0;
+            int UpCellVal = (Allpos / 10) % 10, ucv = 0;
+            int DownCellVal = Allpos % 10, dcv = 0;
             
-            b = solve();
-        }
+            System.out.println("Current Node : "+this.solution.getState()+" Level : "+this.solution.getLevel());
+            System.out.println("Developed children : ");
+            if(LeftCellVal != 0){
+                lcv = Codification.SwitchCell(solution.getState(),LeftCellVal);
+                System.out.println(lcv);
+                if(lcv == Final)
+                {
+                    closed.add(new Node(Final, solution, 0, solution.getLevel()+1));
+                    return true;
+                }
+                else
+                {
+                    Node n = new Node(lcv, solution, 0, solution.getLevel()+1);
+                    if(!closed.contains(n)){ 
+                    
+                        opened.add(n);
+                        closed.add(n);
+                    }
+                }
+            }
+            if(RightCellVal != 0){
+                rcv = Codification.SwitchCell(solution.getState(),RightCellVal);
+                System.out.println(rcv);
+                if(rcv == Final)
+                {
+                    closed.add(new Node(Final, solution, 0, solution.getLevel()+1));
+                    return true;
+                }
+                else
+                {
+                    Node n = new Node(rcv, solution, 0, solution.getLevel()+1);
+                    if(!closed.contains(n)){
+                        opened.add(n);
+                        closed.add(n);
+                    }
+                }
+            }
+            
+            if(UpCellVal != 0){
+                ucv = Codification.SwitchCell(solution.getState(),UpCellVal);
+                System.out.println(ucv);
+                if(ucv == Final)
+                {
+                    closed.add(new Node(Final, solution, 0, solution.getLevel()+1));
+                    return true;
+                }
+                else
+                {
+                    Node n = new Node(ucv, solution, 0, solution.getLevel()+1);
+                    if(!closed.contains(n)){
+                        opened.add(n);
+                        closed.add(n);
+                    }
+                }
+            }
 
-        return b;
+            if(DownCellVal != 0)
+            {
+                dcv = Codification.SwitchCell(solution.getState(),DownCellVal);
+                System.out.println(dcv);
+                if(dcv == Final)
+                {
+                    closed.add(new Node(Final, solution, 0, solution.getLevel()+1));
+                    return true;
+                }
+                else
+                {
+                    Node n = new Node(dcv, solution, 0, solution.getLevel()+1);
+                    if(!closed.contains(n)){
+                        opened.add(n);
+                        closed.add(n);
+                    }
+                }
+            }
+            
+            
+            solution = opened.remove();
+        }while((opened.size() != 0)&&(!closed.contains(new Node(Final, solution, 0, solution.getLevel()+1))));
+        return false;
     }
 
     @Override

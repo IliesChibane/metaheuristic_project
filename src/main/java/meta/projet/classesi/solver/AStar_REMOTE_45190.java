@@ -10,17 +10,15 @@ public class AStar extends Solver {
     private int initialState;
     private int finalState;
     private Heuristic heuristic;
-    private int maxLevel;
 
     private Node solution;
     private PriorityQueue<Node> opened;
     private HashSet<Node> closed;
 
-    public AStar(int initialState, int finalState, Heuristic heuristic, int maxLevel) {
+    public AStar(int initialState, int finalState, Heuristic heuristic) {
         this.initialState = initialState;
         this.finalState = finalState;
         this.heuristic = heuristic;
-        this.maxLevel = maxLevel;
 
         short[][] targetState = new short[3][3];
         intToMatrix(this.finalState, targetState);
@@ -62,30 +60,20 @@ public class AStar extends Solver {
             if (!this.closed.contains(currentNode)) {
                 this.closed.add(currentNode);
 
-                if (this.maxLevel != -1 && currentNode.getLevel() < maxLevel) {
-                    // generate children
-                    intToMatrix(currentNode.getState(), matrixState);
-                    children = getChildren(matrixState, currentNode);
-                    System.out.println("Developed children : ");
-                    for (Node child : children) {
-                        if (child != null) {
-                            System.out.println(String.format("%09d (%d)", child.getState(), child.getScore()));
-                            this.opened.add(child);
-                        }
+                // generate children
+                intToMatrix(currentNode.getState(), matrixState);
+                children = getChildren(matrixState, currentNode);
+                System.out.println("Developed children : ");
+                for (Node child : children) {
+                    if (child != null) {
+                        System.out.println(String.format("%09d (%d)", child.getState(), child.getScore()));
+                        this.opened.add(child);
                     }
                 }
             } else {
                 System.out.println("Already tested");
             }
 
-<<<<<<< HEAD
-            try {
-                Thread.sleep(500);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-=======
->>>>>>> refs/remotes/origin/main
         }
 
         return false;

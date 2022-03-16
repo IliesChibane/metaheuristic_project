@@ -3,6 +3,7 @@ package meta.projet.classesi.solver;
 import java.util.Collection;
 
 public abstract class Solver {
+    
     private Node solution;
     private Collection<Node> opened;
     private Collection<Node> closed;

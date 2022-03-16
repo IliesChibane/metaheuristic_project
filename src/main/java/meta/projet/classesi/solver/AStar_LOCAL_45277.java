@@ -78,14 +78,11 @@ public class AStar extends Solver {
                 System.out.println("Already tested");
             }
 
-<<<<<<< HEAD
             try {
                 Thread.sleep(500);
             } catch (Exception e) {
                 e.printStackTrace();
             }
-=======
->>>>>>> refs/remotes/origin/main
         }
 
         return false;
