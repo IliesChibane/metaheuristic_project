@@ -71,6 +71,7 @@ public class DFS extends Solver {
 
     @Override
     public boolean solve() {
+        do{
         int Allpos = Codification.position(this.solution.getState());
         int LeftCellVal = (Allpos / 1000) % 10, lcv = 0;
         int RightCellVal = (Allpos / 100) % 10, rcv = 0;
@@ -149,18 +150,16 @@ public class DFS extends Solver {
             }
         }
         
-        boolean b = false;
+        solution = opened.removeFirst();//la nouvelle solution c'est la tête de pile
+        closed.add(solution);
+        if (solution.getLevel() > this.depthMax) continue;
         
-        while((opened.size() != 0) &&(!closed.contains(new Node(Final, solution, 0, solution.getLevel()+1))))
-        {   solution = opened.removeFirst();//la nouvelle solution c'est la tête de pile
-            closed.add(solution);
-            if (solution.getLevel() > this.depthMax) continue;
-            b = solve();
-        }
-        
+    }while((opened.size() != 0) &&(!closed.contains(new Node(Final, solution, 0, solution.getLevel()+1))));
+
+
         //DisplayOpened();
         //DisplayClosed();
-        return b;
+        return false;
     }
 
     @Override

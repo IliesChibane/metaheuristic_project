@@ -59,7 +59,7 @@ public class Main {
                 }
                 break;
             case 3:
-            int InitState = 182364705, LastState = 123804765;
+            int InitState = 283164705, LastState = 123804765;
             DFS dfss = new DFS(InitState, LastState,4); 
             Codification.DisplayAsMAtrix(InitState);
             System.out.println();
