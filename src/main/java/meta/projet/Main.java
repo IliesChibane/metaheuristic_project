@@ -23,11 +23,7 @@ public class Main {
         {
             case 1:
                 AStar solver = new AStar(
-<<<<<<< HEAD
                     183264705,
-=======
-                    238164705,
->>>>>>> 05d50133cda627b7ee35205235de06d0289f4de0
                     123804765,
                     new MissPlaced()
                 );
