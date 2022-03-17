@@ -5,7 +5,7 @@ import meta.projet.classesi.solver.DFS;
 import meta.projet.classesi.solver.BFS;
 import meta.projet.classesi.solver.Codification;
 import meta.projet.classesi.solver.Node;
-import meta.projet.classesi.solver.heuristic.DepthFirst;
+import meta.projet.classesi.solver.heuristic.MissPlaced;
 
 import java.util.Scanner;
 
@@ -26,7 +26,7 @@ public class Main {
                 AStar solver = new AStar(
                     182364705,
                     123804765,
-                    new DepthFirst(),
+                    new MissPlaced(),
                     15
                 );
                 if (solver.solve()) {

@@ -77,12 +77,6 @@ public class AStar extends Solver {
             } else {
                 System.out.println("Already tested");
             }
-
-            try {
-                Thread.sleep(500);
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
         }
 
         return false;
