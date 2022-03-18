@@ -1,5 +1,10 @@
 package meta.projet.classesi.solver.heuristic;
 
+
+/**
+ * The minimal sum of movements of each square from 1 to 8, to reach its right
+ * place like in the target state.
+ */
 public class MinMoves implements Heuristic {
     private short[][] targetState;
 

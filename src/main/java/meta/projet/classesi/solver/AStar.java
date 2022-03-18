@@ -6,6 +6,10 @@ import java.util.Collection;
 import java.util.HashSet;
 import java.util.PriorityQueue;
 
+/**
+ * Implements AStar solver
+ *
+ */
 public class AStar extends Solver {
     private int initialState;
     private int finalState;
@@ -16,6 +20,19 @@ public class AStar extends Solver {
     private PriorityQueue<Node> opened;
     private HashSet<Node> closed;
 
+    /**
+     * AStar constructor.
+     * @param initialState the initial state that the solver starts from
+     * @param finalState the target state that the solver needs to reach 
+     * @param heuristic the heuristic that the astar will use to evaluate states
+     *                  valide values are objects of the classes : 
+     *                  - MinMoves
+     *                  - MissPlaced
+     *                  - DepthFirst (is only for internal test)
+     *                  - BreadthFirst (is only for intenal test)
+     * @param maxLevel the maximum level astar is allowed to reach,
+     *                 if set to -1 the maximum level is not limited
+     */
     public AStar(int initialState, int finalState, Heuristic heuristic, int maxLevel) {
         this.initialState = initialState;
         this.finalState = finalState;
@@ -27,6 +44,14 @@ public class AStar extends Solver {
         this.heuristic.setTargetState(targetState);
     }
 
+    /**
+     * This method uses AStar algorithm to find the sequence of actions to reach
+     * the finalState from the initialState. The solution if found will be 
+     * stored in solution member attribute, while opened and closed attributes
+     * will contain the nodes to be developed and the developed nodes
+     * respectively.
+     * @preturn boolean true if the algorithm found a solution, false otherwise
+     */
     public boolean solve() {
         Node currentNode;
         short[][] matrixState = new short[3][3];
@@ -189,5 +214,17 @@ public class AStar extends Solver {
     }
     public Collection<Node> getClosed() {
         return this.closed;
+    }
+    public void setMaxLevel(int maxLevel) {
+        this.maxLevel = maxLevel;
+    }
+    public void setHeuristic(Heuristic heuristic) {
+        this.heuristic = heuristic;
+    }
+    public void setInitialState(int initialState) {
+        this.initialState = initialState;
+    }
+    public void setFinalState(int finalState) {
+        this.finalState = finalState;
     }
 }

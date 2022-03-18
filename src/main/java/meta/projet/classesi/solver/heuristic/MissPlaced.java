@@ -1,6 +1,9 @@
 package meta.projet.classesi.solver.heuristic;
 
-
+/**
+ * The number of squares from 1 to 8 that are miss placed with respect to 
+ * the goal.
+ */
 public class MissPlaced implements Heuristic {
     private short[][] targetState;
 

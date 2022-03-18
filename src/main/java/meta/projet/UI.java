@@ -22,7 +22,7 @@ import meta.projet.classesi.solver.AStar;
 import meta.projet.classesi.solver.DFS;
 import meta.projet.classesi.solver.BFS;
 import meta.projet.classesi.solver.heuristic.DepthFirst;
-
+import meta.projet.classesi.solver.heuristic.MissPlaced;
 
 import javax.swing.JTabbedPane;
 import javax.swing.JScrollPane;
@@ -98,8 +98,8 @@ public class UI {
 		AStar solver = new AStar(
 				getEtatInitAStar(),
                 123804765,
-                new DepthFirst(),
-                getMaxNiveauAStar()
+                new MissPlaced(),
+                -1
             );
             if (solver.solve()) {
                 
