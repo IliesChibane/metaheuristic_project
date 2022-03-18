@@ -1,4 +1,4 @@
-package meta.project.ihm;
+package meta.projet.ihm;
 
 import java.awt.EventQueue;
 import java.awt.Color;
@@ -466,7 +466,7 @@ public class UI {
 				
 				JLabel label_49 = new JLabel();
 				label_49.setBounds(315, 441, 70, 88);
-				label_49.setIcon(new ImageIcon(new ImageIcon(UI.class.getResource("/meta/projet/2026901.png")).getImage().getScaledInstance(label_49.getWidth(), label_49.getHeight(), Image.SCALE_SMOOTH)));
+				label_49.setIcon(new ImageIcon(new ImageIcon(UI.class.getResource("/2026901.png")).getImage().getScaledInstance(label_49.getWidth(), label_49.getHeight(), Image.SCALE_SMOOTH)));
 				label_49.setForeground(new Color(0, 191, 255));
 				label_49.setFont(new Font("Tahoma", Font.PLAIN, 16));
 				
@@ -479,7 +479,7 @@ public class UI {
 		btnNewButton.setForeground(Color.DARK_GRAY);
 		panel_1.add(btnNewButton);
 		frmProjetMetaheuristique.setTitle("Projet Meta-Heuristique");
-		frmProjetMetaheuristique.setIconImage(Toolkit.getDefaultToolkit().getImage(UI.class.getResource("/meta/projet/dot_matrix.png")));
+		frmProjetMetaheuristique.setIconImage(Toolkit.getDefaultToolkit().getImage(UI.class.getResource("/dot_matrix.png")));
 		frmProjetMetaheuristique.setBackground(Color.DARK_GRAY);
 		frmProjetMetaheuristique.setBounds(100, 100, 1000, 700);
 		frmProjetMetaheuristique.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
@@ -510,7 +510,7 @@ public class UI {
 		label_49.setForeground(new Color(0, 191, 255));
 		label_49.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		label_49.setBounds(269, 399, 106, 88);
-		label_49.setIcon(new ImageIcon(new ImageIcon(UI.class.getResource("/meta/projet/2026901.png")).getImage().getScaledInstance(label_49.getWidth(), label_49.getHeight(), Image.SCALE_SMOOTH)));
+		label_49.setIcon(new ImageIcon(new ImageIcon(UI.class.getResource("/2026901.png")).getImage().getScaledInstance(label_49.getWidth(), label_49.getHeight(), Image.SCALE_SMOOTH)));
 		
 	    panel_2.add(label_49);
 	    
@@ -540,7 +540,7 @@ public class UI {
 		label_16.setForeground(new Color(0, 191, 255));
 		label_16.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		label_16.setBounds(2, 115, 108, 101);
-		label_16.setIcon(new ImageIcon(new ImageIcon(UI.class.getResource("/meta/projet/2026901.png")).getImage().getScaledInstance(label_16.getWidth(), label_16.getHeight(), Image.SCALE_SMOOTH)));
+		label_16.setIcon(new ImageIcon(new ImageIcon(UI.class.getResource("/2026901.png")).getImage().getScaledInstance(label_16.getWidth(), label_16.getHeight(), Image.SCALE_SMOOTH)));
 		
 		panel_4.add(label_16);
 		
@@ -588,7 +588,7 @@ public class UI {
 				
 				JLabel label_49 = new JLabel();
 				label_49.setBounds(315, 441, 70, 88);
-				label_49.setIcon(new ImageIcon(new ImageIcon(UI.class.getResource("/meta/projet/2026901.png")).getImage().getScaledInstance(label_49.getWidth(), label_49.getHeight(), Image.SCALE_SMOOTH)));
+				label_49.setIcon(new ImageIcon(new ImageIcon(UI.class.getResource("/2026901.png")).getImage().getScaledInstance(label_49.getWidth(), label_49.getHeight(), Image.SCALE_SMOOTH)));
 				label_49.setForeground(new Color(0, 191, 255));
 				label_49.setFont(new Font("Tahoma", Font.PLAIN, 16));				
 				panel_4.add(label_49);
@@ -662,7 +662,7 @@ public class UI {
 		label_17.setBounds(2, 115, 112, 101);
 		label_17.setForeground(new Color(0, 191, 255));
 		label_17.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_17.setIcon(new ImageIcon(new ImageIcon(UI.class.getResource("/meta/projet/2026901.png")).getImage().getScaledInstance(label_17.getWidth(), label_17.getHeight(), Image.SCALE_SMOOTH)));
+		label_17.setIcon(new ImageIcon(new ImageIcon(UI.class.getResource("/2026901.png")).getImage().getScaledInstance(label_17.getWidth(), label_17.getHeight(), Image.SCALE_SMOOTH)));
 		panel_6.add(label_17);
 		
 		JLabel label_8 = new JLabel("Solution Optimale");
@@ -729,7 +729,7 @@ public class UI {
 				
 				JLabel label_49 = new JLabel();
 				label_49.setBounds(315, 441, 70, 88);
-				label_49.setIcon(new ImageIcon(new ImageIcon(UI.class.getResource("/meta/projet/2026901.png")).getImage().getScaledInstance(label_49.getWidth(), label_49.getHeight(), Image.SCALE_SMOOTH)));
+				label_49.setIcon(new ImageIcon(new ImageIcon(UI.class.getResource("/2026901.png")).getImage().getScaledInstance(label_49.getWidth(), label_49.getHeight(), Image.SCALE_SMOOTH)));
 				label_49.setForeground(new Color(0, 191, 255));
 				label_49.setFont(new Font("Tahoma", Font.PLAIN, 16));
 				panel_6.add(label_49);

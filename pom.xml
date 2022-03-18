@@ -10,7 +10,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <exec.mainClass>meta.projet.Main</exec.mainClass>
+        <exec.mainClass>meta.projet.ihm.UI</exec.mainClass>
         <exec.args></exec.args>
     </properties>
 
@@ -24,7 +24,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>meta.projet.Main</mainClass>
+                            <mainClass>meta.projet.ihm.UI</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
