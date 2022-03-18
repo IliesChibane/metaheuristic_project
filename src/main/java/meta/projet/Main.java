@@ -26,13 +26,8 @@ public class Main {
                 AStar solver = new AStar(
                     283164705,
                     123804765,
-<<<<<<< HEAD
-                    new DepthFirst(),
-                    5
-=======
                     new MissPlaced(),
                     15
->>>>>>> 75d74b4c4364926707b9d82a274737efcd3f318a
                 );
                 if (solver.solve()) {
                     System.out.println("done");
