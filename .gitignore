@@ -1,8 +1,4 @@
-<<<<<<< HEAD
-/target/
-=======
 target/
 .classpath
 .project
 .settings/
->>>>>>> 967c7ff785465cbe8255a69f520b992bfa7fb798

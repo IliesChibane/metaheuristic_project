@@ -27,7 +27,7 @@ public class Main {
                     283164705,
                     123804765,
                     new MissPlaced(),
-                    15
+                    -1
                 );
                 if (solver.solve()) {
                     System.out.println("done");
