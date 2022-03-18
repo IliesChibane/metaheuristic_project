@@ -1,4 +1,4 @@
-package meta.projet;
+package meta.project.ihm;
 
 import java.awt.Point;
 import java.awt.event.MouseAdapter;
@@ -9,12 +9,12 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 public class MotionPanel extends JPanel{
-    private Point initialClick;
-    private JFrame parent;
-
+    /**
+	 * 
+	 */
+	private static final long serialVersionUID = 1L;
+	private Point initialClick;
     public MotionPanel(final JFrame parent){
-    this.parent = parent;
-
     addMouseListener(new MouseAdapter() {
         public void mousePressed(MouseEvent e) {
             initialClick = e.getPoint();

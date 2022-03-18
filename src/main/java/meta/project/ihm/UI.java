@@ -1,9 +1,6 @@
-package meta.projet;
+package meta.project.ihm;
 
 import java.awt.EventQueue;
-
-import javax.swing.JFrame;
-
 import java.awt.Color;
 import java.awt.Toolkit;
 import javax.swing.JLabel;
@@ -13,17 +10,7 @@ import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
 
-import java.util.Collection;
-import javax.swing.JPanel;
-import javax.swing.border.BevelBorder;
-
-import meta.projet.classesi.solver.Node;
-import meta.projet.classesi.solver.AStar;
-import meta.projet.classesi.solver.DFS;
-import meta.projet.classesi.solver.BFS;
-import meta.projet.classesi.solver.heuristic.DepthFirst;
-import meta.projet.classesi.solver.heuristic.MissPlaced;
-
+import javax.swing.JFrame;
 import javax.swing.JTabbedPane;
 import javax.swing.JScrollPane;
 import javax.swing.JTextField;
@@ -32,24 +19,29 @@ import javax.swing.ImageIcon;
 import javax.swing.JList;
 import javax.swing.JOptionPane;
 import javax.swing.JButton;
+import javax.swing.JComboBox;
+import javax.swing.DefaultComboBoxModel;
+import javax.swing.JPanel;
+import javax.swing.border.BevelBorder;
+
+import java.util.Collection;
+
+import meta.projet.classesi.solver.Node;
+import meta.projet.classesi.solver.AStar;
+import meta.projet.classesi.solver.DFS;
+import meta.projet.classesi.solver.BFS;
+import meta.projet.classesi.solver.heuristic.MinMoves;
+import meta.projet.classesi.solver.heuristic.MissPlaced;
+
+
 
 public class UI {
 
 	private JFrame frmProjetMetaheuristique;
-	JPanel panel_2 = new JPanel(),panel_4 = new JPanel(), panel_6 = new JPanel();;
-	private JTextField textField_1 = new JTextField();
-	private JTextField textField_3;
-	private JList<Integer> list = new JList<Integer>();
-	private JList<Integer> list_1 = new JList<Integer>();
-	private JPanel panel_1;
-	private JTextField textField_5 = new JTextField();
-	private JTextField textField_9  = new JTextField();
-	private JTextField textField_11  = new JTextField();
-	private JList<Integer> list_2 = new JList<Integer>();
-	private JList<Integer> list_3 = new JList<Integer>();
-	private JList<Integer> list_4= new JList<Integer>(), list_5 = new JList<Integer>();
-
-
+	private JPanel panel_2 = new JPanel(),panel_4 = new JPanel(), panel_6 = new JPanel(), panel_3 = new JPanel(), panel_5 = new JPanel(),panel_1 = new JPanel();
+	private JTextField textField_1 = new JTextField(), textField_3, textField_5 = new JTextField(),textField_9  = new JTextField(), textField_11  = new JTextField() ;
+	private JComboBox<String> comboBox = new JComboBox<String>();
+	private JList<Integer> list = new JList<Integer>(), list_1 = new JList<Integer>(), list_2 = new JList<Integer>(), list_3 = new JList<Integer>(), list_4= new JList<Integer>(), list_5 = new JList<Integer>();
 
 	/**
 	 * Launch the application.
@@ -94,13 +86,25 @@ public class UI {
 		GridLayout grid = new GridLayout(rows, cols,10,10);
 		
 		panel_2.setLayout(grid);
-				
-		AStar solver = new AStar(
+		
+		String heuristique = comboBox.getSelectedItem().toString();
+		AStar solver;
+		
+		if(heuristique.equals("MinMoves")){		
+		solver = new AStar(
 				getEtatInitAStar(),
                 123804765,
-                new MissPlaced(),
+                new MinMoves(),
                 getMaxNiveauAStar()
             );
+		}else{
+			solver = new AStar(
+					getEtatInitAStar(),
+	                123804765,
+	                new MissPlaced(),
+	                getMaxNiveauAStar()
+	            );
+		}
             if (solver.solve()) {
                 
                 for (Node node = solver.getSolution(); node != null; node = node.getParent()) {
@@ -163,6 +167,11 @@ public class UI {
 	
 	
 	public void showSolutionbfs(int rows, int cols) {
+		
+		
+		GridLayout grid = new GridLayout(rows, cols,10,10);
+		
+		panel_4.setLayout(grid);
         BFS bfss = new BFS(getEtatInitbfs(), 123804765); 
           
 
@@ -182,13 +191,13 @@ public class UI {
             		panel_4.add(panell);
             		
                 	// afficher le chemain de la solu
-            		
-            		format_matrice(Integer.parseInt(a),panell);
-            		
 
+            		
+            		format_matrice(Integer.parseInt(a),panell);         	
 
                 } 
             } else {
+            	
             	panel_4.removeAll();
             	list_2.removeAll();
             	list_3.removeAll();
@@ -232,7 +241,12 @@ public class UI {
 	}
 	
 	public void showSolutiondfs(int rows, int cols) {
-		panel_6.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(0, 191, 255), null, null, null));
+		
+		GridLayout grid = new GridLayout(rows, cols,10,10);
+		
+		panel_6.setLayout(grid);
+		
+		
         DFS dfss = new DFS(getEtatInitdfs(), 123804765,getMaxNiveauDfs()); 
           
 
@@ -245,15 +259,15 @@ public class UI {
                 	a = a.replaceAll(" ", "");
                 	//Créer une novelle matrice 
                 	
-                	JPanel panell1 = new JPanel();
-            		panell1.setForeground(Color.DARK_GRAY);
-            		panell1.setBackground(new Color(0, 191, 255));
-            		panell1.setBounds(160, 2, 70, 88);
-            		panel_6.add(panell1);
+                	JPanel panelll1 = new JPanel();
+            		panelll1.setForeground(Color.DARK_GRAY);
+            		panelll1.setBackground(new Color(0, 191, 255));
+            		panelll1.setBounds(160, 2, 70, 88);
+            		panel_6.add(panelll1);
             		
                 	// afficher le chemin de la solu
             		
-            		format_matrice(Integer.parseInt(a),panell1);
+            		format_matrice(Integer.parseInt(a),panelll1);
             		
 
 
@@ -324,6 +338,9 @@ public class UI {
 		frmProjetMetaheuristique.getContentPane().add(panel);
 		panel.setLayout(null);
 		
+		panel_4.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(0, 191, 255), null, null, null));
+		panel_6.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(0, 191, 255), null, null, null));
+		
 		JLabel lblNewLabel = new JLabel("X");
 		lblNewLabel.setBounds(969, 0, 21, 37);
 		panel.add(lblNewLabel);
@@ -386,11 +403,11 @@ public class UI {
 		lblEnsembleOuvert.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		panel_1.add(lblEnsembleOuvert);
 		
-		JLabel label = new JLabel("Ensemble Ouvert");
-		label.setBounds(832, 59, 149, 37);
-		label.setForeground(new Color(0, 191, 255));
-		label.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		panel_1.add(label);
+		JLabel lblEnsembleFerm_2 = new JLabel("Ensemble Fermé");
+		lblEnsembleFerm_2.setBounds(832, 59, 149, 37);
+		lblEnsembleFerm_2.setForeground(new Color(0, 191, 255));
+		lblEnsembleFerm_2.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		panel_1.add(lblEnsembleFerm_2);
 		
 		
 		
@@ -410,7 +427,7 @@ public class UI {
 		panel_1.add(textField_1);
 		
 		JLabel lblNiveauMaximum = new JLabel("Niveau Maximum");
-		lblNiveauMaximum.setBounds(464, 476, 149, 37);
+		lblNiveauMaximum.setBounds(777, 375, 149, 37);
 		lblNiveauMaximum.setForeground(new Color(0, 191, 255));
 		lblNiveauMaximum.setFont(new Font("Tahoma", Font.PLAIN, 16));
 		panel_1.add(lblNiveauMaximum);
@@ -421,7 +438,7 @@ public class UI {
         scrollPane1.setViewportView(list);
 		
 		textField_3 = new JTextField();
-		textField_3.setBounds(464, 512, 178, 31);
+		textField_3.setBounds(777, 411, 178, 31);
 		textField_3.setText("5");
 		textField_3.setForeground(Color.DARK_GRAY);
 		textField_3.setFont(new Font("Tahoma", Font.BOLD, 15));
@@ -431,7 +448,7 @@ public class UI {
 		panel_1.add(textField_3);
 		
 		JButton btnNewButton = new JButton("Résoudre");
-		btnNewButton.setBounds(805, 456, 137, 38);
+		btnNewButton.setBounds(818, 509, 137, 38);
 		btnNewButton.addMouseListener(new MouseAdapter() {
 			@Override
 			public void mouseClicked(MouseEvent e) {
@@ -468,11 +485,14 @@ public class UI {
 		frmProjetMetaheuristique.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmProjetMetaheuristique.setUndecorated(true);
 		
+		comboBox.setModel(new DefaultComboBoxModel<String>(new String[] {"MinMoves", "MissPlaced"}));
+	    comboBox.setBounds(464, 518, 178, 22);
+	    panel_1.add(comboBox);
+		
 		
 		
 		showSolutionAStar(5,3);
 		
-		JPanel panel_3 = new JPanel();
 		panel_3.setLayout(null);
 		panel_3.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(0, 191, 255), null, null, null));
 		panel_3.setBackground(Color.DARK_GRAY);
@@ -494,6 +514,9 @@ public class UI {
 		
 	    panel_2.add(label_49);
 	    
+	    
+	    
+	    
 		JScrollPane scrollPane_11 = new JScrollPane();
 		scrollPane_11.setBounds(0, 59, 391, 555);
 		panel_3.add(scrollPane_11);
@@ -502,11 +525,8 @@ public class UI {
 		panel_4.setBackground(Color.DARK_GRAY);
 		panel_4.setForeground(new Color(0, 191, 255));
 		scrollPane_11.setViewportView(panel_4);
-		panel_4.setLayout(null);
-		panel_4.setLayout(null);
 		
-		
-		
+
 		
 		JLabel label_15 = new JLabel("Etat Final");
 		label_15.setForeground(new Color(0, 191, 255));
@@ -536,11 +556,11 @@ public class UI {
 		label_2.setBounds(464, 57, 149, 37);
 		panel_3.add(label_2);
 		
-		JLabel label_3 = new JLabel("Ensemble Ouvert");
-		label_3.setForeground(new Color(0, 191, 255));
-		label_3.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_3.setBounds(832, 59, 149, 37);
-		panel_3.add(label_3);
+		JLabel lblEnsembleFerm_1 = new JLabel("Ensemble Fermé");
+		lblEnsembleFerm_1.setForeground(new Color(0, 191, 255));
+		lblEnsembleFerm_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblEnsembleFerm_1.setBounds(832, 59, 149, 37);
+		panel_3.add(lblEnsembleFerm_1);
 		
 		JLabel label_5 = new JLabel("Etat Initial");
 		label_5.setForeground(new Color(0, 191, 255));
@@ -548,7 +568,7 @@ public class UI {
 		label_5.setBounds(464, 375, 149, 37);
 		panel_3.add(label_5);
 		
-		panel_4.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(0, 191, 255), null, null, null));
+		
 		
 		JButton button = new JButton("Résoudre");
 		button.addMouseListener(new MouseAdapter() {
@@ -556,6 +576,8 @@ public class UI {
 			public void mouseClicked(MouseEvent e) {
 				
 				panel_4.removeAll();
+				list_2.removeAll();
+				list_3.removeAll();
 				JLabel lblEtatInitial = new JLabel("Etat Final");
 				lblEtatInitial.setBounds(13, 2, 70, 88);
 				panel_4.add(lblEtatInitial);
@@ -579,11 +601,6 @@ public class UI {
 		panel_3.add(button);
 		
 		
-		list_2.setBounds(474, 105, 121, 223);
-		list_3.setBounds(832, 105, 121, 223);
-		
-		
-		JPanel panel_5 = new JPanel();
 		panel_5.setLayout(null);
 		panel_5.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(0, 191, 255), null, null, null));
 		panel_5.setBackground(Color.DARK_GRAY);
@@ -592,6 +609,18 @@ public class UI {
 		JScrollPane scrollPane_2 = new JScrollPane();
 		scrollPane_2.setBounds(0, 59, 391, 555);
 		panel_5.add(scrollPane_2);
+		
+		
+		JScrollPane scrollPanel_1 = new JScrollPane();
+		scrollPanel_1.setBounds(474, 105, 121, 223);
+        panel_5.add(scrollPanel_1);
+        scrollPanel_1.setViewportView(list_4);
+        
+        
+        JScrollPane scrollPanell_1 = new JScrollPane();
+        scrollPanell_1.setBounds(832, 105, 121, 223);
+        panel_5.add(scrollPanell_1);
+        scrollPanell_1.setViewportView(list_5);
 		
 		
 		textField_9 = new JTextField();
@@ -648,11 +677,11 @@ public class UI {
 		label_9.setBounds(464, 57, 149, 37);
 		panel_5.add(label_9);
 		
-		JLabel label_10 = new JLabel("Ensemble Ouvert");
-		label_10.setForeground(new Color(0, 191, 255));
-		label_10.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label_10.setBounds(832, 59, 149, 37);
-		panel_5.add(label_10);
+		JLabel lblEnsembleFerm = new JLabel("Ensemble Fermé");
+		lblEnsembleFerm.setForeground(new Color(0, 191, 255));
+		lblEnsembleFerm.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		lblEnsembleFerm.setBounds(832, 59, 149, 37);
+		panel_5.add(lblEnsembleFerm);
 		
 		JLabel label_12 = new JLabel("Etat Initial");
 		label_12.setForeground(new Color(0, 191, 255));
@@ -688,6 +717,8 @@ public class UI {
 			public void mouseClicked(MouseEvent e) {
 				
 				panel_6.removeAll();
+				list_4.removeAll();
+				list_5.removeAll();
 				JLabel lblEtatInitial = new JLabel("Etat Final");
 				lblEtatInitial.setBounds(13, 2, 70, 88);
 				panel_6.add(lblEtatInitial);
@@ -711,12 +742,7 @@ public class UI {
 		panel_5.add(button_1);
 		
 		
-		list_4.setBounds(474, 105, 121, 223);
-		panel_5.add(list_4);
 		
-		
-		list_5.setBounds(832, 105, 121, 223);
-		panel_5.add(list_5);
 		
 		
 	}
