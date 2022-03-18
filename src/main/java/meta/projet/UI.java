@@ -99,7 +99,7 @@ public class UI {
 				getEtatInitAStar(),
                 123804765,
                 new MissPlaced(),
-                -1
+                getMaxNiveauAStar()
             );
             if (solver.solve()) {
                 
