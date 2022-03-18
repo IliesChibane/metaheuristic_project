@@ -49,8 +49,7 @@ public class AStar extends Solver {
         while (!this.opened.isEmpty()) {
             currentNode = this.opened.poll(); 
 
-            System.out.println(String.format("Current Node : %09d with level %d and score %d", 
-                        currentNode.getState(), currentNode.getLevel(), currentNode.getScore()));
+            //System.out.println(String.format("Current Node : %09d with level %d and score %d", currentNode.getState(), currentNode.getLevel(), currentNode.getScore()));
 
             // test if the current node is a goal
             if (currentNode.getState() == this.finalState) {
@@ -66,16 +65,16 @@ public class AStar extends Solver {
                     // generate children
                     intToMatrix(currentNode.getState(), matrixState);
                     children = getChildren(matrixState, currentNode);
-                    System.out.println("Developed children : ");
+                    //System.out.println("Developed children : ");
                     for (Node child : children) {
                         if (child != null) {
-                            System.out.println(String.format("%09d (%d)", child.getState(), child.getScore()));
+                            //System.out.println(String.format("%09d (%d)", child.getState(), child.getScore()));
                             this.opened.add(child);
                         }
                     }
                 }
             } else {
-                System.out.println("Already tested");
+                //System.out.println("Already tested");
             }
 
             try {

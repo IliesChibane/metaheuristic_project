@@ -8,25 +8,48 @@ import java.awt.Color;
 import java.awt.Toolkit;
 import javax.swing.JLabel;
 import java.awt.Font;
+import java.awt.GridLayout;
 import java.awt.Image;
 import java.awt.event.MouseAdapter;
 import java.awt.event.MouseEvent;
+
+import java.util.Collection;
 import javax.swing.JPanel;
 import javax.swing.border.BevelBorder;
+
+import meta.projet.classesi.solver.Node;
+import meta.projet.classesi.solver.AStar;
+import meta.projet.classesi.solver.DFS;
+import meta.projet.classesi.solver.BFS;
+import meta.projet.classesi.solver.heuristic.DepthFirst;
+
+
 import javax.swing.JTabbedPane;
 import javax.swing.JScrollPane;
-import javax.swing.ScrollPaneConstants;
-import javax.swing.JTable;
-import javax.swing.ListSelectionModel;
-import javax.swing.JSeparator;
 import javax.swing.JTextField;
-import javax.swing.JTextArea;
+import javax.swing.DefaultListModel;
 import javax.swing.ImageIcon;
+import javax.swing.JList;
+import javax.swing.JOptionPane;
+import javax.swing.JButton;
 
 public class UI {
 
 	private JFrame frmProjetMetaheuristique;
-	private JTextField textField;
+	JPanel panel_2 = new JPanel(),panel_4 = new JPanel(), panel_6 = new JPanel();;
+	private JTextField textField_1 = new JTextField();
+	private JTextField textField_3;
+	private JList<Integer> list = new JList<Integer>();
+	private JList<Integer> list_1 = new JList<Integer>();
+	private JPanel panel_1;
+	private JTextField textField_5 = new JTextField();
+	private JTextField textField_9  = new JTextField();
+	private JTextField textField_11  = new JTextField();
+	private JList<Integer> list_2 = new JList<Integer>();
+	private JList<Integer> list_3 = new JList<Integer>();
+	private JList<Integer> list_4= new JList<Integer>(), list_5 = new JList<Integer>();
+
+
 
 	/**
 	 * Launch the application.
@@ -54,6 +77,241 @@ public class UI {
 	/**
 	 * Initialize the contents of the frame.
 	 */
+	
+	
+	public int getMaxNiveauAStar() {
+		return Integer.parseInt(textField_3.getText());
+	}
+	
+	public int getEtatInitAStar() {
+		if(textField_1.getText().length() == 9)
+			return Integer.parseInt(textField_1.getText());
+		else 
+			return 283164705;
+	}
+	
+	public void showSolutionAStar(int rows, int cols) {
+		GridLayout grid = new GridLayout(rows, cols,10,10);
+		
+		panel_2.setLayout(grid);
+				
+		AStar solver = new AStar(
+				getEtatInitAStar(),
+                123804765,
+                new DepthFirst(),
+                getMaxNiveauAStar()
+            );
+            if (solver.solve()) {
+                
+                for (Node node = solver.getSolution(); node != null; node = node.getParent()) {
+                	
+                	//Créer une novelle matrice 
+                	
+                	JPanel p = new JPanel();
+            		p.setForeground(Color.DARK_GRAY);
+            		p.setBackground(new Color(0, 191, 255));
+            		p.setBounds(160, 2, 70, 88);
+            		panel_2.add(p);
+            		
+                	
+                	// afficher le chemain de la solu
+            		
+            		format_matrice(node.getState(),p);
+                	
+                } 
+            } else {
+            	panel_2.removeAll();
+            	list.removeAll();
+            	list_1.removeAll();
+            	JOptionPane.showMessageDialog(null, "Vous ne pouvez pas avoir une solution avec ces paramètres, veuillez les changer");          	
+            }
+            
+            DefaultListModel<Integer> model = new DefaultListModel<Integer>();
+            DefaultListModel<Integer> model_1 = new DefaultListModel<Integer>();
+            Collection<Node>  op = solver.getOpened();
+            Collection<Node>  clo = solver.getClosed();
+            
+      
+            list.setModel(model);
+            list.removeAll();
+            
+            list_1.setModel(model_1);
+            list_1.removeAll();
+            
+            model.removeAllElements();
+            model_1.removeAllElements();
+            
+            for(Node n: op) {
+            	model.addElement(n.getState());
+            }
+            for(Node n: clo) {
+            	model_1.addElement(n.getState());
+            }
+           
+
+		
+	}
+	
+	
+	public int getEtatInitbfs() {
+		if(textField_5.getText().length() == 9)
+			return Integer.parseInt(textField_5.getText());
+		else 
+			return 283164705;
+	}
+	
+	
+	
+	public void showSolutionbfs(int rows, int cols) {
+        BFS bfss = new BFS(getEtatInitbfs(), 123804765); 
+          
+
+            if (bfss.solve()) {
+                String solu = bfss.DisplayResolutionPath();
+                String[] arrOfSolu = solu.split("<--");
+                
+                for (String a : arrOfSolu) {
+                	
+                	a = a.replaceAll(" ", "");
+                	//Créer une novelle matrice 
+                	
+                	JPanel panell = new JPanel();
+            		panell.setForeground(Color.DARK_GRAY);
+            		panell.setBackground(new Color(0, 191, 255));
+            		panell.setBounds(160, 2, 70, 88);
+            		panel_4.add(panell);
+            		
+                	// afficher le chemain de la solu
+            		
+            		format_matrice(Integer.parseInt(a),panell);
+            		
+
+
+                } 
+            } else {
+            	panel_4.removeAll();
+            	list_2.removeAll();
+            	list_3.removeAll();
+            	JOptionPane.showMessageDialog(null, "Vous ne pouvez pas avoir une solution avec ces paramètres, veuillez les changer");          	
+            }
+            
+            DefaultListModel<Integer> modell = new DefaultListModel<Integer>();
+            DefaultListModel<Integer> modell_1 = new DefaultListModel<Integer>();
+            Collection<Node>  op = bfss.getOpened();
+            Collection<Node>  clo = bfss.getClosed();
+   
+            list_2.setModel(modell);
+            list_2.removeAll();
+            
+         
+            list_3.setModel(modell_1);
+            list_3.removeAll();
+            
+            modell.removeAllElements();
+            modell_1.removeAllElements();
+            
+            for(Node n: op) {
+            	modell.addElement(n.getState());
+            }
+            for(Node n: clo) {
+            	modell_1.addElement(n.getState());
+            }
+           
+		
+	}
+	
+	public int getEtatInitdfs() {
+		if(textField_9.getText().length() == 9)
+			return Integer.parseInt(textField_9.getText());
+		else 
+			return 283164705;
+	}
+	
+	public int getMaxNiveauDfs() {
+		return Integer.parseInt(textField_11.getText());
+	}
+	
+	public void showSolutiondfs(int rows, int cols) {
+		panel_6.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(0, 191, 255), null, null, null));
+        DFS dfss = new DFS(getEtatInitdfs(), 123804765,getMaxNiveauDfs()); 
+          
+
+            if (dfss.solve()) {
+                String solu = dfss.DisplayResolutionPath();
+                String[] arrOfSolu = solu.split("<--");
+                
+                for (String a : arrOfSolu) {
+                	
+                	a = a.replaceAll(" ", "");
+                	//Créer une novelle matrice 
+                	
+                	JPanel panell1 = new JPanel();
+            		panell1.setForeground(Color.DARK_GRAY);
+            		panell1.setBackground(new Color(0, 191, 255));
+            		panell1.setBounds(160, 2, 70, 88);
+            		panel_6.add(panell1);
+            		
+                	// afficher le chemin de la solu
+            		
+            		format_matrice(Integer.parseInt(a),panell1);
+            		
+
+
+                } 
+            } else {
+            	panel_6.removeAll();
+            	list_4.removeAll();
+            	list_5.removeAll();
+            	JOptionPane.showMessageDialog(null, "Vous ne pouvez pas avoir une solution avec ces paramètres, veuillez les changer");          	
+            }
+            
+            DefaultListModel<Integer> modelll = new DefaultListModel<Integer>();
+            DefaultListModel<Integer> modelll_1 = new DefaultListModel<Integer>();
+            Collection<Node>  op = dfss.getOpened();
+            Collection<Node>  clo = dfss.getClosed();
+   
+            list_4.setModel(modelll);
+            list_4.removeAll();
+            
+         
+            list_5.setModel(modelll_1);
+            list_5.removeAll();
+            
+            modelll.removeAllElements();
+            modelll_1.removeAllElements();
+            
+            for(Node n: op) {
+            	modelll.addElement(n.getState());
+            }
+            for(Node n: clo) {
+            	modelll_1.addElement(n.getState());
+            }
+           
+		
+	}
+	
+    public static void format_matrice(int code, JPanel panel)
+    {
+        
+    	panel.setLayout(new GridLayout(3,3));
+    	int j = 0, k = 100000000;
+
+        for(int i=0;i<9;++i)
+        {
+            int a = (code / k) % 10;
+            k /= 10;
+            JLabel c = new JLabel("  ".concat(Integer.toString(a)));
+            c.setSize(20, 20);
+            c.setFont(new Font("Tahoma", Font.BOLD, 30));
+            c.setForeground(Color.DARK_GRAY);
+            panel.add(c);
+            j++;
+            if(j==3) j = 0;
+            
+        }
+    }
+
+	
 	private void initialize() {
 		frmProjetMetaheuristique = new JFrame();
 		frmProjetMetaheuristique.getContentPane().setBackground(Color.DARK_GRAY);
@@ -61,7 +319,7 @@ public class UI {
 		
 		JPanel panel = new MotionPanel(frmProjetMetaheuristique);
 		panel.setBounds(0, 0, 1000, 42);
-		panel.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(127, 255, 212), null, null, new Color(127, 255, 212)));
+		panel.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(0, 191, 255), null, null, new Color(0, 191, 255)));
 		panel.setBackground(Color.DARK_GRAY);
 		frmProjetMetaheuristique.getContentPane().add(panel);
 		panel.setLayout(null);
@@ -76,477 +334,390 @@ public class UI {
 			}
 		});
 		lblNewLabel.setFont(new Font("Tahoma", Font.BOLD, 30));
-		lblNewLabel.setForeground(new Color(127, 255, 212));
+		lblNewLabel.setForeground(new Color(0, 191, 255));
 		
 		JTabbedPane tabbedPane = new JTabbedPane(JTabbedPane.TOP);
-		tabbedPane.setBorder(new BevelBorder(BevelBorder.RAISED, new Color(127, 255, 212), null, null, null));
+		tabbedPane.setBorder(new BevelBorder(BevelBorder.RAISED, new Color(0, 191, 255), null, null, null));
 		tabbedPane.setBounds(0, 43, 1000, 657);
 		tabbedPane.setBackground(Color.DARK_GRAY);
 		frmProjetMetaheuristique.getContentPane().add(tabbedPane);
 		
-		JPanel panel_1 = new JPanel();
-		panel_1.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(127, 255, 212), null, null, null));
+		panel_1 = new JPanel();
+		panel_1.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(0, 191, 255), null, null, null));
 		panel_1.setBackground(Color.DARK_GRAY);
-		tabbedPane.addTab("A* Algorithm", null, panel_1, null);
-		panel_1.setLayout(null);
+		tabbedPane.addTab("Algorithme A*", null, panel_1, null);
 		
 		JScrollPane scrollPane = new JScrollPane();
-		scrollPane.setHorizontalScrollBarPolicy(ScrollPaneConstants.HORIZONTAL_SCROLLBAR_NEVER);
-		scrollPane.setViewportBorder(new BevelBorder(BevelBorder.LOWERED, new Color(127, 255, 212), null, null, null));
-		scrollPane.setBounds(0, 59, 237, 570);
+		scrollPane.setBounds(0, 59, 391, 555);
+		scrollPane.setViewportBorder(new BevelBorder(BevelBorder.LOWERED, new Color(0, 191, 255), null, null, null));
 		scrollPane.getVerticalScrollBar().setVisible(false);
+		panel_1.setLayout(null);
 		panel_1.add(scrollPane);
 		
-		JPanel panel_2 = new JPanel();
+		
+        JScrollPane scrollPane_1 = new JScrollPane();
+        scrollPane_1.setBounds(834, 97, 121, 223);
+        panel_1.add(scrollPane_1);
+        scrollPane_1.setViewportView(list_1);
+		
+		panel_2 = new JPanel();
+		panel_2.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(0, 191, 255), null, null, null));
 		
 		scrollPane.setViewportView(panel_2);
 		panel_2.setBackground(Color.DARK_GRAY);
 		panel_2.setLayout(null);
 		
-		JLabel lblEtatInitial = new JLabel("Etat initial");
+		JLabel lblEtatInitial = new JLabel("Etat Final");
 		lblEtatInitial.setBounds(13, 2, 70, 88);
 		panel_2.add(lblEtatInitial);
-		lblEtatInitial.setForeground(new Color(127, 255, 212));
+		lblEtatInitial.setForeground(new Color(0, 191, 255));
 		lblEtatInitial.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		
-		JSeparator separator = new JSeparator();
-		separator.setBounds(0, 2, 163, 88);
-		separator.setBackground(new Color(127, 255, 212));
-		panel_2.add(separator);
-		
-		JSeparator separator_1 = new JSeparator();
-		separator_1.setBounds(0, 120, 83, 88);
-		separator_1.setBackground(new Color(127, 255, 212));
-		panel_2.add(separator_1);
-		
-		JSeparator separator_2 = new JSeparator();
-		separator_2.setBounds(147, 120, 83, 88);
-		separator_2.setBackground(new Color(127, 255, 212));
-		panel_2.add(separator_2);
-		
-		JSeparator separator_3 = new JSeparator();
-		separator_3.setBounds(66, 238, 97, 88);
-		separator_3.setBackground(new Color(127, 255, 212));
-		panel_2.add(separator_3);
-		
-		JSeparator separator_4 = new JSeparator();
-		separator_4.setBounds(0, 356, 83, 88);
-		separator_4.setBackground(new Color(127, 255, 212));
-		panel_2.add(separator_4);
-		
-		JLabel lblEtatFinal = new JLabel("Etat final");
-		lblEtatFinal.setBounds(160, 356, 70, 88);
-		lblEtatFinal.setForeground(new Color(127, 255, 212));
-		lblEtatFinal.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		panel_2.add(lblEtatFinal);
-		
-		JLabel lblRsultat = new JLabel("Résultat");
-		lblRsultat.setBounds(0, 477, 70, 88);
-		lblRsultat.setForeground(new Color(127, 255, 212));
-		lblRsultat.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		panel_2.add(lblRsultat);
-		
-		textField = new JTextField();
-		textField.setFont(new Font("Tahoma", Font.BOLD, 15));
-		textField.setText("0.00");
-		textField.setForeground(Color.DARK_GRAY);
-		textField.setEditable(false);
-		textField.setBackground(new Color(255, 255, 255));
-		textField.setBounds(74, 510, 156, 27);
-		panel_2.add(textField);
-		textField.setColumns(10);
-		
-		JPanel panel_4 = new JPanel();
-		panel_4.setForeground(Color.DARK_GRAY);
-		panel_4.setBackground(new Color(127, 255, 212));
-		panel_4.setBounds(160, 2, 70, 88);
-		panel_2.add(panel_4);
-		panel_4.setLayout(null);
-		
-		
-		
-		
-		
-		
-		JLabel lblNewLabel_2 = new JLabel("");
-		ImageIcon imageIcon = new ImageIcon(new ImageIcon(UI.class.getResource("/meta/projet/grid-27529_1280.png")).getImage().getScaledInstance(70, 88, Image.SCALE_DEFAULT));
-		lblNewLabel_2.setIcon(imageIcon);
-		lblNewLabel_2.setBounds(0, 0, 70, 88);
-		panel_4.add(lblNewLabel_2);
-		
-		JLabel lblNewLabel_3 = new JLabel(" 1");
-		lblNewLabel_3.setFont(new Font("Tahoma", Font.BOLD, 16));
-		lblNewLabel_3.setForeground(Color.DARK_GRAY);
-		lblNewLabel_3.setBounds(24, 0, 22, 26);
-		panel_4.add(lblNewLabel_3);
-		
-		JLabel label_5 = new JLabel(" 1");
-		label_5.setForeground(Color.DARK_GRAY);
-		label_5.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_5.setBounds(48, 0, 22, 26);
-		panel_4.add(label_5);
-		
-		JLabel label_6 = new JLabel(" 1");
-		label_6.setForeground(Color.DARK_GRAY);
-		label_6.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_6.setBounds(0, 0, 22, 26);
-		panel_4.add(label_6);
-		
-		JLabel label_7 = new JLabel(" 1");
-		label_7.setForeground(Color.DARK_GRAY);
-		label_7.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_7.setBounds(0, 30, 22, 26);
-		panel_4.add(label_7);
-		
-		JLabel label_8 = new JLabel(" 1");
-		label_8.setForeground(Color.DARK_GRAY);
-		label_8.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_8.setBounds(24, 30, 22, 26);
-		panel_4.add(label_8);
-		
-		JLabel label_9 = new JLabel(" 1");
-		label_9.setForeground(Color.DARK_GRAY);
-		label_9.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_9.setBounds(48, 30, 22, 26);
-		panel_4.add(label_9);
-		
-		JLabel label_10 = new JLabel(" 1");
-		label_10.setForeground(Color.DARK_GRAY);
-		label_10.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_10.setBounds(48, 62, 22, 26);
-		panel_4.add(label_10);
-		
-		JLabel label_11 = new JLabel(" 1");
-		label_11.setForeground(Color.DARK_GRAY);
-		label_11.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_11.setBounds(24, 62, 22, 26);
-		panel_4.add(label_11);
-		
-		JLabel label_12 = new JLabel(" 1");
-		label_12.setForeground(Color.DARK_GRAY);
-		label_12.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_12.setBounds(0, 62, 22, 26);
-		panel_4.add(label_12);
-		
-		JPanel panel_5 = new JPanel();
-		panel_5.setForeground(Color.DARK_GRAY);
-		panel_5.setBackground(new Color(127, 255, 212));
-		panel_5.setBounds(80, 120, 70, 88);
-		panel_2.add(panel_5);
-		panel_5.setLayout(null);
-		
-		JLabel label_1 = new JLabel("");
-		ImageIcon imageIcon1 = new ImageIcon(new ImageIcon(UI.class.getResource("/meta/projet/grid-27529_1280.png")).getImage().getScaledInstance(70, 88, Image.SCALE_DEFAULT));
-		label_1.setIcon(imageIcon1);
-		label_1.setBounds(0, 0, 70, 88);
-		panel_5.add(label_1);
-		
-		JLabel label_13 = new JLabel(" 1");
-		label_13.setForeground(Color.DARK_GRAY);
-		label_13.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_13.setBounds(24, 0, 22, 26);
-		panel_5.add(label_13);
-		
-		JLabel label_14 = new JLabel(" 1");
-		label_14.setForeground(Color.DARK_GRAY);
-		label_14.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_14.setBounds(48, 0, 22, 26);
-		panel_5.add(label_14);
-		
-		JLabel label_15 = new JLabel(" 1");
-		label_15.setForeground(Color.DARK_GRAY);
-		label_15.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_15.setBounds(0, 0, 22, 26);
-		panel_5.add(label_15);
-		
-		JLabel label_16 = new JLabel(" 1");
-		label_16.setForeground(Color.DARK_GRAY);
-		label_16.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_16.setBounds(0, 30, 22, 26);
-		panel_5.add(label_16);
-		
-		JLabel label_17 = new JLabel(" 1");
-		label_17.setForeground(Color.DARK_GRAY);
-		label_17.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_17.setBounds(24, 30, 22, 26);
-		panel_5.add(label_17);
-		
-		JLabel label_18 = new JLabel(" 1");
-		label_18.setForeground(Color.DARK_GRAY);
-		label_18.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_18.setBounds(48, 30, 22, 26);
-		panel_5.add(label_18);
-		
-		JLabel label_19 = new JLabel(" 1");
-		label_19.setForeground(Color.DARK_GRAY);
-		label_19.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_19.setBounds(48, 62, 22, 26);
-		panel_5.add(label_19);
-		
-		JLabel label_20 = new JLabel(" 1");
-		label_20.setForeground(Color.DARK_GRAY);
-		label_20.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_20.setBounds(24, 62, 22, 26);
-		panel_5.add(label_20);
-		
-		JLabel label_21 = new JLabel(" 1");
-		label_21.setForeground(Color.DARK_GRAY);
-		label_21.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_21.setBounds(0, 62, 22, 26);
-		panel_5.add(label_21);
-		
-		JPanel panel_6 = new JPanel();
-		panel_6.setForeground(Color.DARK_GRAY);
-		panel_6.setBackground(new Color(127, 255, 212));
-		panel_6.setBounds(0, 238, 70, 88);
-		panel_2.add(panel_6);
-		panel_6.setLayout(null);
-		
-		JLabel label_2 = new JLabel("");
-		ImageIcon imageIcon2 = new ImageIcon(new ImageIcon(UI.class.getResource("/meta/projet/grid-27529_1280.png")).getImage().getScaledInstance(70, 88, Image.SCALE_DEFAULT));
-		label_2.setIcon(imageIcon2);
-		label_2.setBounds(0, 0, 70, 88);
-		panel_6.add(label_2);
-		
-		JLabel label_31 = new JLabel(" 1");
-		label_31.setForeground(Color.DARK_GRAY);
-		label_31.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_31.setBounds(24, 0, 22, 26);
-		panel_6.add(label_31);
-		
-		JLabel label_32 = new JLabel(" 1");
-		label_32.setForeground(Color.DARK_GRAY);
-		label_32.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_32.setBounds(48, 0, 22, 26);
-		panel_6.add(label_32);
-		
-		JLabel label_33 = new JLabel(" 1");
-		label_33.setForeground(Color.DARK_GRAY);
-		label_33.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_33.setBounds(0, 0, 22, 26);
-		panel_6.add(label_33);
-		
-		JLabel label_34 = new JLabel(" 1");
-		label_34.setForeground(Color.DARK_GRAY);
-		label_34.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_34.setBounds(0, 30, 22, 26);
-		panel_6.add(label_34);
-		
-		JLabel label_35 = new JLabel(" 1");
-		label_35.setForeground(Color.DARK_GRAY);
-		label_35.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_35.setBounds(24, 30, 22, 26);
-		panel_6.add(label_35);
-		
-		JLabel label_36 = new JLabel(" 1");
-		label_36.setForeground(Color.DARK_GRAY);
-		label_36.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_36.setBounds(48, 30, 22, 26);
-		panel_6.add(label_36);
-		
-		JLabel label_37 = new JLabel(" 1");
-		label_37.setForeground(Color.DARK_GRAY);
-		label_37.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_37.setBounds(48, 62, 22, 26);
-		panel_6.add(label_37);
-		
-		JLabel label_38 = new JLabel(" 1");
-		label_38.setForeground(Color.DARK_GRAY);
-		label_38.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_38.setBounds(24, 62, 22, 26);
-		panel_6.add(label_38);
-		
-		JLabel label_39 = new JLabel(" 1");
-		label_39.setForeground(Color.DARK_GRAY);
-		label_39.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_39.setBounds(0, 62, 22, 26);
-		panel_6.add(label_39);
-		
-		JPanel panel_7 = new JPanel();
-		panel_7.setForeground(Color.DARK_GRAY);
-		panel_7.setBackground(new Color(127, 255, 212));
-		panel_7.setBounds(160, 238, 71, 88);
-		panel_2.add(panel_7);
-		panel_7.setLayout(null);
-		
-		JLabel label_3 = new JLabel("");
-		ImageIcon imageIcon3 = new ImageIcon(new ImageIcon(UI.class.getResource("/meta/projet/grid-27529_1280.png")).getImage().getScaledInstance(70, 88, Image.SCALE_DEFAULT));
-		label_3.setIcon(imageIcon3);
-		label_3.setBounds(0, 0, 71, 88);
-		panel_7.add(label_3);
-		
-		JLabel label_22 = new JLabel(" 1");
-		label_22.setForeground(Color.DARK_GRAY);
-		label_22.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_22.setBounds(24, 0, 22, 26);
-		panel_7.add(label_22);
-		
-		JLabel label_23 = new JLabel(" 1");
-		label_23.setForeground(Color.DARK_GRAY);
-		label_23.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_23.setBounds(48, 0, 22, 26);
-		panel_7.add(label_23);
-		
-		JLabel label_24 = new JLabel(" 1");
-		label_24.setForeground(Color.DARK_GRAY);
-		label_24.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_24.setBounds(0, 0, 22, 26);
-		panel_7.add(label_24);
-		
-		JLabel label_25 = new JLabel(" 1");
-		label_25.setForeground(Color.DARK_GRAY);
-		label_25.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_25.setBounds(0, 30, 22, 26);
-		panel_7.add(label_25);
-		
-		JLabel label_26 = new JLabel(" 1");
-		label_26.setForeground(Color.DARK_GRAY);
-		label_26.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_26.setBounds(24, 30, 22, 26);
-		panel_7.add(label_26);
-		
-		JLabel label_27 = new JLabel(" 1");
-		label_27.setForeground(Color.DARK_GRAY);
-		label_27.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_27.setBounds(48, 30, 22, 26);
-		panel_7.add(label_27);
-		
-		JLabel label_28 = new JLabel(" 1");
-		label_28.setForeground(Color.DARK_GRAY);
-		label_28.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_28.setBounds(48, 62, 22, 26);
-		panel_7.add(label_28);
-		
-		JLabel label_29 = new JLabel(" 1");
-		label_29.setForeground(Color.DARK_GRAY);
-		label_29.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_29.setBounds(24, 62, 22, 26);
-		panel_7.add(label_29);
-		
-		JLabel label_30 = new JLabel(" 1");
-		label_30.setForeground(Color.DARK_GRAY);
-		label_30.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_30.setBounds(0, 62, 22, 26);
-		panel_7.add(label_30);
-		
-		JPanel panel_8 = new JPanel();
-		panel_8.setForeground(Color.DARK_GRAY);
-		panel_8.setBackground(new Color(127, 255, 212));
-		panel_8.setBounds(74, 356, 70, 88);
-		panel_2.add(panel_8);
-		panel_8.setLayout(null);
-		
-		JLabel label_4 = new JLabel("");
-		ImageIcon imageIcon4 = new ImageIcon(new ImageIcon(UI.class.getResource("/meta/projet/grid-27529_1280.png")).getImage().getScaledInstance(70, 88, Image.SCALE_DEFAULT));
-		label_4.setIcon(imageIcon4);
-		label_4.setBounds(0, 0, 71, 88);
-		panel_8.add(label_4);
-		
-		JLabel label_40 = new JLabel(" 1");
-		label_40.setForeground(Color.DARK_GRAY);
-		label_40.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_40.setBounds(24, 0, 22, 26);
-		panel_8.add(label_40);
-		
-		JLabel label_41 = new JLabel(" 1");
-		label_41.setForeground(Color.DARK_GRAY);
-		label_41.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_41.setBounds(48, 0, 22, 26);
-		panel_8.add(label_41);
-		
-		JLabel label_42 = new JLabel(" 1");
-		label_42.setForeground(Color.DARK_GRAY);
-		label_42.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_42.setBounds(0, 0, 22, 26);
-		panel_8.add(label_42);
-		
-		JLabel label_43 = new JLabel(" 1");
-		label_43.setForeground(Color.DARK_GRAY);
-		label_43.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_43.setBounds(0, 30, 22, 26);
-		panel_8.add(label_43);
-		
-		JLabel label_44 = new JLabel(" 1");
-		label_44.setForeground(Color.DARK_GRAY);
-		label_44.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_44.setBounds(24, 30, 22, 26);
-		panel_8.add(label_44);
-		
-		JLabel label_45 = new JLabel(" 1");
-		label_45.setForeground(Color.DARK_GRAY);
-		label_45.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_45.setBounds(48, 30, 22, 26);
-		panel_8.add(label_45);
-		
-		JLabel label_46 = new JLabel(" 1");
-		label_46.setForeground(Color.DARK_GRAY);
-		label_46.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_46.setBounds(48, 62, 22, 26);
-		panel_8.add(label_46);
-		
-		JLabel label_47 = new JLabel(" 1");
-		label_47.setForeground(Color.DARK_GRAY);
-		label_47.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_47.setBounds(24, 62, 22, 26);
-		panel_8.add(label_47);
-		
-		JLabel label_48 = new JLabel(" 1");
-		label_48.setForeground(Color.DARK_GRAY);
-		label_48.setFont(new Font("Tahoma", Font.BOLD, 16));
-		label_48.setBounds(0, 62, 22, 26);
-		panel_8.add(label_48);
-		
-		
 		
 		
 		JLabel lblSolutionOptimale = new JLabel("Solution Optimale");
 		lblSolutionOptimale.setBounds(10, 11, 340, 37);
 		panel_1.add(lblSolutionOptimale);
-		lblSolutionOptimale.setForeground(new Color(127, 255, 212));
+		lblSolutionOptimale.setForeground(new Color(0, 191, 255));
 		lblSolutionOptimale.setFont(new Font("Tahoma", Font.BOLD, 25));
 		
 		JLabel lblEnsembleOuvert = new JLabel("Ensemble Ouvert");
-		lblEnsembleOuvert.setForeground(new Color(127, 255, 212));
+		lblEnsembleOuvert.setBounds(464, 57, 149, 37);
+		lblEnsembleOuvert.setForeground(new Color(0, 191, 255));
 		lblEnsembleOuvert.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblEnsembleOuvert.setBounds(279, 59, 149, 37);
 		panel_1.add(lblEnsembleOuvert);
 		
 		JLabel label = new JLabel("Ensemble Ouvert");
-		label.setForeground(new Color(127, 255, 212));
+		label.setBounds(832, 59, 149, 37);
+		label.setForeground(new Color(0, 191, 255));
 		label.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		label.setBounds(279, 353, 149, 37);
 		panel_1.add(label);
 		
-		JTextArea textArea = new JTextArea();
-		textArea.setForeground(Color.DARK_GRAY);
-		textArea.setBounds(279, 88, 124, 232);
-		panel_1.add(textArea);
 		
-		JTextArea textArea_1 = new JTextArea();
-		textArea_1.setForeground(Color.DARK_GRAY);
-		textArea_1.setBounds(279, 382, 124, 232);
-		panel_1.add(textArea_1);
 		
-		JPanel panel_3 = new JPanel();
-		panel_3.setForeground(new Color(127, 255, 212));
-		panel_3.setBackground(Color.DARK_GRAY);
-		panel_3.setBounds(453, 71, 528, 543);
-		panel_1.add(panel_3);
+		JLabel lblEtatInitial_1 = new JLabel("Etat Initial");
+		lblEtatInitial_1.setBounds(464, 375, 149, 37);
+		lblEtatInitial_1.setForeground(new Color(0, 191, 255));
+		lblEtatInitial_1.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		panel_1.add(lblEtatInitial_1);
+		textField_1.setBounds(464, 411, 178, 31);
 		
-		JLabel lblComparaison = new JLabel("Comparaison");
-		lblComparaison.setForeground(new Color(127, 255, 212));
-		lblComparaison.setFont(new Font("Tahoma", Font.PLAIN, 16));
-		lblComparaison.setBounds(453, 28, 149, 37);
-		panel_1.add(lblComparaison);
 		
-		JLabel lblNewLabel_1 = new JLabel("New label");
-		lblNewLabel_1.setBounds(313, 162, 66, 54);
-		panel_1.add(lblNewLabel_1);
+		textField_1.setText("283164705");
+		textField_1.setForeground(Color.DARK_GRAY);
+		textField_1.setFont(new Font("Tahoma", Font.BOLD, 15));
+		textField_1.setColumns(10);
+		textField_1.setBackground(Color.WHITE);
+		panel_1.add(textField_1);
+		
+		JLabel lblNiveauMaximum = new JLabel("Niveau Maximum");
+		lblNiveauMaximum.setBounds(464, 476, 149, 37);
+		lblNiveauMaximum.setForeground(new Color(0, 191, 255));
+		lblNiveauMaximum.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		panel_1.add(lblNiveauMaximum);
+		
+        JScrollPane scrollPane1 = new JScrollPane();
+        scrollPane1.setBounds(465, 97, 121, 223);
+        panel_1.add(scrollPane1);
+        scrollPane1.setViewportView(list);
+		
+		textField_3 = new JTextField();
+		textField_3.setBounds(464, 512, 178, 31);
+		textField_3.setText("5");
+		textField_3.setForeground(Color.DARK_GRAY);
+		textField_3.setFont(new Font("Tahoma", Font.BOLD, 15));
+		textField_3.setEditable(true);
+		textField_3.setColumns(10);
+		textField_3.setBackground(Color.WHITE);
+		panel_1.add(textField_3);
+		
+		JButton btnNewButton = new JButton("Résoudre");
+		btnNewButton.setBounds(805, 456, 137, 38);
+		btnNewButton.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				panel_2.removeAll();
+				
+				
+				JLabel lblEtatInitial = new JLabel("Etat Final");
+				lblEtatInitial.setBounds(13, 2, 70, 88);
+				panel_2.add(lblEtatInitial);
+				lblEtatInitial.setForeground(new Color(0, 191, 255));
+				lblEtatInitial.setFont(new Font("Tahoma", Font.PLAIN, 16));
+				
+				showSolutionAStar(5,3);
+				
+				
+				JLabel label_49 = new JLabel();
+				label_49.setBounds(315, 441, 70, 88);
+				label_49.setIcon(new ImageIcon(new ImageIcon(UI.class.getResource("/meta/projet/2026901.png")).getImage().getScaledInstance(label_49.getWidth(), label_49.getHeight(), Image.SCALE_SMOOTH)));
+				label_49.setForeground(new Color(0, 191, 255));
+				label_49.setFont(new Font("Tahoma", Font.PLAIN, 16));
+				
+				panel_2.add(label_49);
+				
+			}
+		});
+		btnNewButton.setBackground(new Color(0, 191, 255));
+		btnNewButton.setFont(new Font("Tahoma", Font.BOLD, 12));
+		btnNewButton.setForeground(Color.DARK_GRAY);
+		panel_1.add(btnNewButton);
 		frmProjetMetaheuristique.setTitle("Projet Meta-Heuristique");
 		frmProjetMetaheuristique.setIconImage(Toolkit.getDefaultToolkit().getImage(UI.class.getResource("/meta/projet/dot_matrix.png")));
 		frmProjetMetaheuristique.setBackground(Color.DARK_GRAY);
 		frmProjetMetaheuristique.setBounds(100, 100, 1000, 700);
 		frmProjetMetaheuristique.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frmProjetMetaheuristique.setUndecorated(true);
+		
+		
+		
+		showSolutionAStar(5,3);
+		
+		JPanel panel_3 = new JPanel();
+		panel_3.setLayout(null);
+		panel_3.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(0, 191, 255), null, null, null));
+		panel_3.setBackground(Color.DARK_GRAY);
+		tabbedPane.addTab("Algorithme BFS", null, panel_3, null);
+		
+		textField_5.setText("283164705");
+		textField_5.setForeground(Color.DARK_GRAY);
+		textField_5.setFont(new Font("Tahoma", Font.BOLD, 15));
+		textField_5.setColumns(10);
+		textField_5.setBackground(Color.WHITE);
+		textField_5.setBounds(464, 411, 178, 31);
+		panel_3.add(textField_5);
+		
+		JLabel label_49 = new JLabel("Etat Initial");
+		label_49.setForeground(new Color(0, 191, 255));
+		label_49.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		label_49.setBounds(269, 399, 106, 88);
+		label_49.setIcon(new ImageIcon(new ImageIcon(UI.class.getResource("/meta/projet/2026901.png")).getImage().getScaledInstance(label_49.getWidth(), label_49.getHeight(), Image.SCALE_SMOOTH)));
+		
+	    panel_2.add(label_49);
+	    
+		JScrollPane scrollPane_11 = new JScrollPane();
+		scrollPane_11.setBounds(0, 59, 391, 555);
+		panel_3.add(scrollPane_11);
+		
+		
+		panel_4.setBackground(Color.DARK_GRAY);
+		panel_4.setForeground(new Color(0, 191, 255));
+		scrollPane_11.setViewportView(panel_4);
+		panel_4.setLayout(null);
+		panel_4.setLayout(null);
+		
+		
+		
+		
+		JLabel label_15 = new JLabel("Etat Final");
+		label_15.setForeground(new Color(0, 191, 255));
+		label_15.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		label_15.setBounds(2, 4, 385, 101);
+		panel_4.add(label_15);
+		
+		showSolutionbfs(5, 3);
+		
+		JLabel label_16 = new JLabel();
+		label_16.setForeground(new Color(0, 191, 255));
+		label_16.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		label_16.setBounds(2, 115, 108, 101);
+		label_16.setIcon(new ImageIcon(new ImageIcon(UI.class.getResource("/meta/projet/2026901.png")).getImage().getScaledInstance(label_16.getWidth(), label_16.getHeight(), Image.SCALE_SMOOTH)));
+		
+		panel_4.add(label_16);
+		
+		JLabel label_1 = new JLabel("Solution Optimale");
+		label_1.setForeground(new Color(0, 191, 255));
+		label_1.setFont(new Font("Tahoma", Font.BOLD, 25));
+		label_1.setBounds(10, 11, 340, 37);
+		panel_3.add(label_1);
+		
+		JLabel label_2 = new JLabel("Ensemble Ouvert");
+		label_2.setForeground(new Color(0, 191, 255));
+		label_2.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		label_2.setBounds(464, 57, 149, 37);
+		panel_3.add(label_2);
+		
+		JLabel label_3 = new JLabel("Ensemble Ouvert");
+		label_3.setForeground(new Color(0, 191, 255));
+		label_3.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		label_3.setBounds(832, 59, 149, 37);
+		panel_3.add(label_3);
+		
+		JLabel label_5 = new JLabel("Etat Initial");
+		label_5.setForeground(new Color(0, 191, 255));
+		label_5.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		label_5.setBounds(464, 375, 149, 37);
+		panel_3.add(label_5);
+		
+		panel_4.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(0, 191, 255), null, null, null));
+		
+		JButton button = new JButton("Résoudre");
+		button.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				panel_4.removeAll();
+				JLabel lblEtatInitial = new JLabel("Etat Final");
+				lblEtatInitial.setBounds(13, 2, 70, 88);
+				panel_4.add(lblEtatInitial);
+				lblEtatInitial.setForeground(new Color(0, 191, 255));
+				lblEtatInitial.setFont(new Font("Tahoma", Font.PLAIN, 16));
+				
+				showSolutionbfs(10,10);
+				
+				JLabel label_49 = new JLabel();
+				label_49.setBounds(315, 441, 70, 88);
+				label_49.setIcon(new ImageIcon(new ImageIcon(UI.class.getResource("/meta/projet/2026901.png")).getImage().getScaledInstance(label_49.getWidth(), label_49.getHeight(), Image.SCALE_SMOOTH)));
+				label_49.setForeground(new Color(0, 191, 255));
+				label_49.setFont(new Font("Tahoma", Font.PLAIN, 16));				
+				panel_4.add(label_49);
+			}
+		});
+		button.setForeground(Color.DARK_GRAY);
+		button.setFont(new Font("Tahoma", Font.BOLD, 12));
+		button.setBackground(new Color(0, 191, 255));
+		button.setBounds(464, 487, 137, 38);
+		panel_3.add(button);
+		
+		
+		list_2.setBounds(474, 105, 121, 223);
+		list_3.setBounds(832, 105, 121, 223);
+		
+		
+		JPanel panel_5 = new JPanel();
+		panel_5.setLayout(null);
+		panel_5.setBorder(new BevelBorder(BevelBorder.LOWERED, new Color(0, 191, 255), null, null, null));
+		panel_5.setBackground(Color.DARK_GRAY);
+		tabbedPane.addTab("Algorithme DFS", null, panel_5, null);
+		
+		JScrollPane scrollPane_2 = new JScrollPane();
+		scrollPane_2.setBounds(0, 59, 391, 555);
+		panel_5.add(scrollPane_2);
+		
+		
+		textField_9 = new JTextField();
+		textField_9.setText("283164705");
+		textField_9.setForeground(Color.DARK_GRAY);
+		textField_9.setFont(new Font("Tahoma", Font.BOLD, 15));
+		textField_9.setColumns(10);
+		textField_9.setBackground(Color.WHITE);
+		textField_9.setBounds(464, 411, 178, 31);
+		panel_5.add(textField_9);
+		panel_6.setBackground(Color.DARK_GRAY);
+		scrollPane_2.setViewportView(panel_6);
+		panel_6.setLayout(null);
+		panel_6.setLayout(null);
+		
+		JLabel label_6 = new JLabel("Etat Final");
+		label_6.setBounds(2, 4, 385, 101);
+		label_6.setForeground(new Color(0, 191, 255));
+		label_6.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		panel_6.add(label_6);
+		
+		
+		
+		textField_11 = new JTextField();
+		textField_11.setText("4");
+		textField_11.setForeground(Color.DARK_GRAY);
+		textField_11.setFont(new Font("Tahoma", Font.BOLD, 15));
+		textField_11.setEditable(true);
+		textField_11.setColumns(10);
+		textField_11.setBackground(Color.WHITE);
+		textField_11.setBounds(464, 512, 178, 31);
+		panel_5.add(textField_11);
+		
+		
+		
+		showSolutiondfs(5,3);
+		
+		JLabel label_17 = new JLabel();
+		label_17.setBounds(2, 115, 112, 101);
+		label_17.setForeground(new Color(0, 191, 255));
+		label_17.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		label_17.setIcon(new ImageIcon(new ImageIcon(UI.class.getResource("/meta/projet/2026901.png")).getImage().getScaledInstance(label_17.getWidth(), label_17.getHeight(), Image.SCALE_SMOOTH)));
+		panel_6.add(label_17);
+		
+		JLabel label_8 = new JLabel("Solution Optimale");
+		label_8.setForeground(new Color(0, 191, 255));
+		label_8.setFont(new Font("Tahoma", Font.BOLD, 25));
+		label_8.setBounds(10, 11, 340, 37);
+		panel_5.add(label_8);
+		
+		JLabel label_9 = new JLabel("Ensemble Ouvert");
+		label_9.setForeground(new Color(0, 191, 255));
+		label_9.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		label_9.setBounds(464, 57, 149, 37);
+		panel_5.add(label_9);
+		
+		JLabel label_10 = new JLabel("Ensemble Ouvert");
+		label_10.setForeground(new Color(0, 191, 255));
+		label_10.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		label_10.setBounds(832, 59, 149, 37);
+		panel_5.add(label_10);
+		
+		JLabel label_12 = new JLabel("Etat Initial");
+		label_12.setForeground(new Color(0, 191, 255));
+		label_12.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		label_12.setBounds(464, 375, 149, 37);
+		panel_5.add(label_12);
+	
+		
+		
+		
+		JScrollPane scrollPane_111 = new JScrollPane();
+        scrollPane_111.setBounds(465, 97, 121, 223);
+        panel_3.add(scrollPane_111);
+        scrollPane_111.setViewportView(list_2);
+        
+        JScrollPane scrollPane_1111 = new JScrollPane();
+        scrollPane_1111.setBounds(834, 97, 121, 223);
+        panel_3.add(scrollPane_1111);
+        scrollPane_1111.setViewportView(list_3);
+        
+		
+		JLabel label_14 = new JLabel("Niveau Maximum");
+		label_14.setForeground(new Color(0, 191, 255));
+		label_14.setFont(new Font("Tahoma", Font.PLAIN, 16));
+		label_14.setBounds(464, 476, 149, 37);
+		panel_5.add(label_14);
+		
+		
+		
+		JButton button_1 = new JButton("Résoudre");
+		button_1.addMouseListener(new MouseAdapter() {
+			@Override
+			public void mouseClicked(MouseEvent e) {
+				
+				panel_6.removeAll();
+				JLabel lblEtatInitial = new JLabel("Etat Final");
+				lblEtatInitial.setBounds(13, 2, 70, 88);
+				panel_6.add(lblEtatInitial);
+				lblEtatInitial.setForeground(new Color(0, 191, 255));
+				lblEtatInitial.setFont(new Font("Tahoma", Font.PLAIN, 16));
+				
+				showSolutiondfs(10, 10);
+				
+				JLabel label_49 = new JLabel();
+				label_49.setBounds(315, 441, 70, 88);
+				label_49.setIcon(new ImageIcon(new ImageIcon(UI.class.getResource("/meta/projet/2026901.png")).getImage().getScaledInstance(label_49.getWidth(), label_49.getHeight(), Image.SCALE_SMOOTH)));
+				label_49.setForeground(new Color(0, 191, 255));
+				label_49.setFont(new Font("Tahoma", Font.PLAIN, 16));
+				panel_6.add(label_49);
+			}
+		});
+		button_1.setForeground(Color.DARK_GRAY);
+		button_1.setFont(new Font("Tahoma", Font.BOLD, 12));
+		button_1.setBackground(new Color(0, 191, 255));
+		button_1.setBounds(816, 454, 137, 38);
+		panel_5.add(button_1);
+		
+		
+		list_4.setBounds(474, 105, 121, 223);
+		panel_5.add(list_4);
+		
+		
+		list_5.setBounds(832, 105, 121, 223);
+		panel_5.add(list_5);
+		
+		
 	}
 }
