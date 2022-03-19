@@ -15,6 +15,7 @@ public class AStar extends Solver {
     private int finalState;
     private Heuristic heuristic;
     private int maxLevel;
+    private int numberOfDevelopedStates;
 
     private Node solution;
     private PriorityQueue<Node> opened;
@@ -38,6 +39,7 @@ public class AStar extends Solver {
         this.finalState = finalState;
         this.heuristic = heuristic;
         this.maxLevel = maxLevel;
+        this.numberOfDevelopedStates = 0;
 
         short[][] targetState = new short[3][3];
         intToMatrix(this.finalState, targetState);
@@ -57,6 +59,7 @@ public class AStar extends Solver {
         short[][] matrixState = new short[3][3];
         Node[] children;
 
+        this.numberOfDevelopedStates = 0;
         this.opened = new PriorityQueue<Node>();  
         this.closed = new HashSet<Node>();  
 
@@ -87,6 +90,7 @@ public class AStar extends Solver {
                 this.closed.add(currentNode);
 
                 if (this.maxLevel == -1 || currentNode.getLevel() < maxLevel) {
+                    this.numberOfDevelopedStates = this.numberOfDevelopedStates + 1;
                     // generate children
                     intToMatrix(currentNode.getState(), matrixState);
                     children = getChildren(matrixState, currentNode);
@@ -214,6 +218,9 @@ public class AStar extends Solver {
     }
     public Collection<Node> getClosed() {
         return this.closed;
+    }
+    public int getNumberOfDevelopedStates() {
+        return this.numberOfDevelopedStates;
     }
     public void setMaxLevel(int maxLevel) {
         this.maxLevel = maxLevel;
