@@ -220,11 +220,17 @@ public class AStar extends Solver {
     }
     public void setHeuristic(Heuristic heuristic) {
         this.heuristic = heuristic;
+        short[][] targetState = new short[3][3];
+        intToMatrix(this.finalState, targetState);
+        this.heuristic.setTargetState(targetState);
     }
     public void setInitialState(int initialState) {
         this.initialState = initialState;
     }
     public void setFinalState(int finalState) {
         this.finalState = finalState;
+        short[][] targetState = new short[3][3];
+        intToMatrix(this.finalState, targetState);
+        this.heuristic.setTargetState(targetState);
     }
 }
