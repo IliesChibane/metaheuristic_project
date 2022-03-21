@@ -69,6 +69,8 @@ public class BFS extends Solver {
     @Override
     public boolean solve() {
         do {
+            this.numberOfDevelopedStates++;
+            
             /**
              * Retrieve all the adjacent value of the 0 in the matrix
              * (Check the position method in the Codification class for more details)
