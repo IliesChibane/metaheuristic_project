@@ -1,8 +1,9 @@
 package meta.projet;
 
-import meta.projet.classesi.solver.AStar;
-import meta.projet.classesi.solver.heuristic.MinMoves;
-import meta.projet.classesi.solver.heuristic.MissPlaced;
+//import meta.projet.classesi.solver.AStar;
+import meta.projet.classesi.solver.BFS;
+//import meta.projet.classesi.solver.heuristic.MinMoves;
+//import meta.projet.classesi.solver.heuristic.MissPlaced;
 
 public class Main {
     public static void main(String[] args) {
@@ -17,11 +18,9 @@ public class Main {
 
         for (int j = 0; j < 10; ++j) {
             for (int i = 0; i < initialStates.length; ++i) {
-                AStar solver = new AStar(
+                BFS solver = new BFS(
                     initialStates[i],
-                    123804765,
-                    new MissPlaced(),
-                    -1
+                    123804765
                 );
 
                 start = System.nanoTime();
@@ -32,51 +31,19 @@ public class Main {
                     initialStates[i],
                     stop - start,
                     solutionsDepth[i],
-                    solver.getSolution().getLevel(),
+                    solver.getSolution().getLevel() + 1,
                     solver.getNumberOfDevelopedStates(),
                     solver.getOpened().size(),
                     solver.getClosed().size()));
 
                 temps_exec[i] += stop - start;
             }
+            System.out.println("---------------------------------");
         }
 
         for (int i = 0; i < initialStates.length; ++i) {
             temps_exec[i] /= 10;
             System.out.println(temps_exec[i]);
         }
-
-        temps_exec = new long[8];
-        for (int j = 0; j < 10; ++j) {
-            for (int i = 0; i < initialStates.length; ++i) {
-                AStar solver = new AStar(
-                    initialStates[i],
-                    123804765,
-                    new MinMoves(),
-                    -1
-                );
-
-                start = System.nanoTime();
-                solver.solve();
-                stop = System.nanoTime();
-                System.out.println(String.format(
-                    "%09d %d %d %d %d %d %d",
-                    initialStates[i],
-                    stop - start,
-                    solutionsDepth[i],
-                    solver.getSolution().getLevel(),
-                    solver.getNumberOfDevelopedStates(),
-                    solver.getOpened().size(),
-                    solver.getClosed().size()));
-
-                temps_exec[i] += stop - start;
-            }
-        }
-        
-        for (int i = 0; i < initialStates.length; ++i) {
-            temps_exec[i] /= 10;
-            System.out.println(temps_exec[i]);
-        }
-
     }
 }

@@ -130,57 +130,31 @@ public class Codification {
     }
 
     /**
-     * static method which switch the 0 with an adjacent cell 
+     * static method which switch the 0 with an adjacent cell using math operations
      * @param c the matrix in an integer form
+     * @param pz the position of the zero
+     * @param pi the position of the the adjacent cell
      * @param vi the value of the adjacent cell
      * @return the new matrix in an integer form
      */
-    public static int SwitchCell(int c, int vi)
+    public static int SwitchCell(int c,int pz, int pi, int vi)
     {
-        int newcode = 0;
-        int digit;
-        //Looping through the matrix
-        for(int i = 0;i<9;++i)
-        {
-            digit = c % 10;
-            c = (int) c / 10;
-            //if the current value equals the value of the adjacent cell we replace it by 0
-            if(digit == vi)
-                newcode += 0;
-            //if the current value equals 0 we replace it by the value of the adjacent cell
-            else if (digit == 0)
-                newcode += vi * Math.pow(10, i);
-            //if else we don't make any change
-            else 
-                newcode += digit * Math.pow(10, i);
-        }
-        return newcode;
-    }
-
-    //! Ne marche pas pour certaines valeurs à améliorer car plus optimal que la précédentes
-    public static int SwitchCells(int c,int pz, int pi, int vi)
-    {
-        int Before = 0, After = 0, End = 0, SwitchedValue = 0;
-        int BeforeInter;
         if(pz < pi)
         {
-            BeforeInter = (int)(c /  Math.pow(10,(9-pz+1)));
-            Before = (int)(BeforeInter * Math.pow(10,(9-pz+1)));
-            int ND = String.valueOf(BeforeInter).length();
-            SwitchedValue = (int)(vi*Math.pow(10,(9-ND-1)));
-            After = (int)((int)((c %  Math.pow(10,(9-pz)))/Math.pow(10,(9-pz+1)))*Math.pow(10,(9-pi+1)));
-            End = (int)(c % Math.pow(10, (9-pi)));
-            return Before + SwitchedValue + After + End;
+            return Integer.parseInt((((int)(c /  Math.pow(10,(9 - pz + 1))) == 0) ?  "" : (int)(c /  Math.pow(10,(9-pz+1)))) + "" +
+                                        vi + "" +
+                                        (((int)((int)((c %  Math.pow(10,(9-pz)))/Math.pow(10,(9 - pi + 1)))) == 0) ?  "" : (int)((int)((c %  Math.pow(10,(9 - pz))) / Math.pow(10,(9 - pi + 1))))) +
+                                        "0" + 
+                                        (((int)(c % Math.pow(10, (9 - pi)))== 0) ?  "" : (int)(c % Math.pow(10, (9 - pi)))));
         }
         else
         {
-            BeforeInter = (int)(c /  Math.pow(10,(9-pi+1)));
-            Before = (int)(BeforeInter * Math.pow(10,(9-pi+1)));
-            int ND = String.valueOf(BeforeInter).length();
-            After = (int)((int)((c % Math.pow(10,9-pi))/Math.pow(10,(9-pz+1))) * Math.pow(10,(pi-ND+1)));
-            SwitchedValue = (int)(vi*Math.pow(10,(9-pz)));
-            End = (int)(c % Math.pow(10, (9-pz)));
-            return Before + After + SwitchedValue + End;
+            return Integer.parseInt((((int)(c /  Math.pow(10,(9 - pi + 1))) == 0) ?  "" : (int)(c /  Math.pow(10,(9 - pi + 1)))) +
+                                        "0" +
+                                        (((int)((int)(c % Math.pow(10, 9 - pi)) / Math.pow(10, 9 - pz + 1)) == 0) ?  "" : (int)((int)(c % Math.pow(10, 9 - pi)) / Math.pow(10, 9 - pz + 1))) + "" +
+                                        vi + "" + 
+                                        (((int)(c % Math.pow(10, 9 - pz)) == 0) ?  "" : (int)(c % Math.pow(10, 9 - pz))));
         }
+
     }
 }
