@@ -1,9 +1,16 @@
 package meta.projet;
 
+<<<<<<< HEAD
 import meta.projet.classesi.solver.AStar;
 import meta.projet.classesi.solver.DFS;
 import meta.projet.classesi.solver.heuristic.MinMoves;
 import meta.projet.classesi.solver.heuristic.MissPlaced;
+=======
+//import meta.projet.classesi.solver.AStar;
+import meta.projet.classesi.solver.BFS;
+//import meta.projet.classesi.solver.heuristic.MinMoves;
+//import meta.projet.classesi.solver.heuristic.MissPlaced;
+>>>>>>> 3baf00a978b45563ba29815e8d08bb75209e2abd
 
 public class Main {
     public static void main(String[] args) {
@@ -19,10 +26,16 @@ public class Main {
 
         for (int j = 0; j < 10; ++j) {
             for (int i = 0; i < initialStates.length; ++i) {
+<<<<<<< HEAD
                 DFS solver = new DFS(
                     initialStates[i],
                     123804765,
                     150
+=======
+                BFS solver = new BFS(
+                    initialStates[i],
+                    123804765
+>>>>>>> 3baf00a978b45563ba29815e8d08bb75209e2abd
                 );
 
                 start = System.nanoTime();
@@ -33,7 +46,7 @@ public class Main {
                     initialStates[i],
                     stop - start,
                     solutionsDepth[i],
-                    solver.getSolution().getLevel(),
+                    solver.getSolution().getLevel() + 1,
                     solver.getNumberOfDevelopedStates(),
                     solver.getOpened().size(),
                     solver.getClosed().size()));
@@ -41,13 +54,17 @@ public class Main {
 
                 temps_exec[i] += stop - start;
             }
+            System.out.println("---------------------------------");
         }
 
         for (int i = 0; i < initialStates.length; ++i) {
             temps_exec[i] /= 10;
             System.out.println(temps_exec[i]);
         }
+<<<<<<< HEAD
         System.out.println(b);
 
+=======
+>>>>>>> 3baf00a978b45563ba29815e8d08bb75209e2abd
     }
 }
