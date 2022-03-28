@@ -15,6 +15,7 @@ public class DFS extends Solver {
     private ArrayDeque<Node> opened;
     private HashSet<Node> closed;
     private int depthMax;
+    private int numberOfDevelopedStates;
 
     public DFS(int initialState, int finalState, int depthMax){
         this.Initial = new Node(initialState,null,0,0);
@@ -24,6 +25,7 @@ public class DFS extends Solver {
         this.closed.add(this.Initial);
         this.opened = new ArrayDeque<Node>();
         this.depthMax = depthMax;
+        this.numberOfDevelopedStates = 0;
     }
 
     public String DisplayResolutionPath()
@@ -72,9 +74,11 @@ public class DFS extends Solver {
 
     @Override
     public boolean solve() {
+        this.numberOfDevelopedStates = 0;
     opened.add(this.solution);    
     while((opened.size() != 0) &&(!closed.contains(new Node(Final, solution, 0, solution.getLevel()+1)))){
         solution = opened.removeFirst();//la nouvelle solution c'est la tête de pile
+        this.numberOfDevelopedStates = this.numberOfDevelopedStates + 1;
         closed.add(solution);
         if (solution.getLevel() > this.depthMax) continue;
         int Allpos = Codification.position(this.solution.getState());
@@ -176,5 +180,8 @@ public class DFS extends Solver {
     @Override
     public Collection<Node> getClosed() {
         return this.closed;
+    }
+    public int getNumberOfDevelopedStates() {
+        return this.numberOfDevelopedStates;
     }
 }
