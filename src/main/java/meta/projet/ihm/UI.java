@@ -180,7 +180,7 @@ public class UI {
                 String[] arrOfSolu = solu.split("<--");
                 
                 for (String a : arrOfSolu) {
-                	
+
                 	a = a.replaceAll(" ", "");
                 	//Créer une novelle matrice 
                 	

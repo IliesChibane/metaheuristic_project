@@ -44,7 +44,7 @@ public class BFS extends Solver {
      */
     public String DisplayResolutionPath()
     {
-        String FinalPath = "";
+        String FinalPath = String.format("%09d ", Final) + " <-- ";
         Node x = solution;
         /**
          * Loop through all the nodes of the optimal path and a <-- between each state to

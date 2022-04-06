@@ -45,8 +45,7 @@ public class DFS extends Solver {
 
     public String DisplayResolutionPath()
     {
-        //System.out.println("Resolution path :");
-        String FinalPath = "";
+        String FinalPath = String.format("%09d",Final) + " <-- ";
         Node x = solution;
         
          /**
@@ -63,37 +62,7 @@ public class DFS extends Solver {
         return FinalPath;
     }
 
-    public void DisplayClosed()
-    {
-        //System.out.println("Affichage de l'ensemble ferme");
-        String FinalPath = "";
-        Iterator<Node> itr = closed.iterator();
-        while(itr.hasNext())
-        {
-            FinalPath += Integer.toString(itr.next().getState()) + ", ";
-        }
-        FinalPath = FinalPath.substring(0, FinalPath.length() - 2);  
-        //System.out.println("{"+FinalPath+"}");
-        //System.out.println();
-    }
-
-    public void DisplayOpened()
-    {
-        //System.out.println("Affichage de l'ensemble ouvert :");
-        String FinalPath = "";
-        ArrayDeque<Node> itr = this.opened;
-        while(itr.size() != 0)
-        {
-            Node x = itr.removeLast();
-            FinalPath += Integer.toString(x.getState()) + ", ";
-        }
-        FinalPath = FinalPath.substring(0, FinalPath.length() - 2);  
-        //System.out.println("{"+FinalPath+"}");
-        //System.out.println();
-    }
-
-    
-        /**
+    /**
      * This method uses DFS algorithm to find the sequence of actions to reach
      * the finalState from the initialState. The solution if found will be 
      * stored in solution member attribute, while opened and closed attributes
@@ -119,19 +88,16 @@ public class DFS extends Solver {
           * (Check the position method in the Codification class for more details)
           */
         int Allpos = Codification.position(this.solution.getState());
+        int zpos = (Allpos / 10000) % 10;
         int LeftCellVal = (Allpos / 1000) % 10, lcv = 0;
         int RightCellVal = (Allpos / 100) % 10, rcv = 0;
         int UpCellVal = (Allpos / 10) % 10, ucv = 0;
         int DownCellVal = Allpos % 10, dcv = 0;
         
-        //System.out.println("Current Node : "+this.solution.getState()+" Level : "+this.solution.getLevel());
-        //System.out.println("Developed children : ");
-        
         //If the adjacent left cell exist
         if(LeftCellVal != 0){
             //We switch the value of the left cell and the 0 to get a new state
-            lcv = Codification.SwitchCell(solution.getState(),LeftCellVal);
-            //System.out.println(lcv);
+            lcv = Codification.SwitchCell(solution.getState(),zpos,zpos - 1,LeftCellVal);
             //if this state is the final state
             if(lcv == Final)
             {//We add the state to closed and we return true
@@ -150,8 +116,7 @@ public class DFS extends Solver {
         //If the adjacent right cell exist
         if(RightCellVal != 0){
             //We switch the value of the right cell and the 0 to get a new state
-            rcv = Codification.SwitchCell(solution.getState(),RightCellVal);
-            //System.out.println(rcv);
+            rcv = Codification.SwitchCell(solution.getState(),zpos,zpos + 1,RightCellVal);
             //if this state is the final state
             if(rcv == Final)
             {//We add the state to closed and we return true
@@ -170,8 +135,7 @@ public class DFS extends Solver {
         //If the adjacent upper cell exist
         if(UpCellVal != 0){
             //We switch the value of the upper cell and the 0 to get a new state
-            ucv = Codification.SwitchCell(solution.getState(),UpCellVal);
-            //System.out.println(ucv);
+            ucv = Codification.SwitchCell(solution.getState(),zpos,zpos - 3,UpCellVal);
             //if this state is the final state
             if(ucv == Final)
             {//We add the state to closed and we return true
@@ -191,8 +155,7 @@ public class DFS extends Solver {
         //If the adjacent left cell exist
         if(DownCellVal != 0)
         {//We switch the value of the left cell and the 0 to get a new state
-            dcv = Codification.SwitchCell(solution.getState(),DownCellVal);
-            //System.out.println(dcv);
+            dcv = Codification.SwitchCell(solution.getState(),zpos,zpos + 3,DownCellVal);
             //if this state is the final state
             if(dcv == Final)
             {//We add the state to closed and we return true
@@ -211,9 +174,6 @@ public class DFS extends Solver {
         
         
     }
-
-        //DisplayOpened();
-        //DisplayClosed();
         return false;
     }
 
