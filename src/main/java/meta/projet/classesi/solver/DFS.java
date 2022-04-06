@@ -4,7 +4,6 @@ package meta.projet.classesi.solver;
 import java.util.ArrayDeque;
 import java.util.Collection;
 import java.util.HashSet;
-import java.util.Iterator;
 
 public class DFS extends Solver {
 

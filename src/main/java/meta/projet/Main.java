@@ -1,9 +1,5 @@
 package meta.projet;
 
-import meta.projet.classesi.solver.AStar;
-import meta.projet.classesi.solver.DFS;
-import meta.projet.classesi.solver.heuristic.MinMoves;
-import meta.projet.classesi.solver.heuristic.MissPlaced;
 //import meta.projet.classesi.solver.AStar;
 import meta.projet.classesi.solver.BFS;
 //import meta.projet.classesi.solver.heuristic.MinMoves;
@@ -23,11 +19,6 @@ public class Main {
 
         for (int j = 0; j < 10; ++j) {
             for (int i = 0; i < initialStates.length; ++i) {
-                DFS solverDfs = new DFS(
-                    initialStates[i],
-                    123804765,
-                    150);
-
                 BFS solver = new BFS(
                     initialStates[i],
                     123804765
