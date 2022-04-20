@@ -169,12 +169,12 @@ public class GASolver extends Solver {
                 }
             }
 
-            System.out.println("=== initial selection ===");
-            for (Individual individual : selection) {
-                individual.print();
-                System.out.println(" | score = " + fitnessScore(initialState, individual.getSequence(), heuristic));
-            }
-            System.out.println("==================================");
+            //System.out.println("=== initial selection ===");
+            //for (Individual individual : selection) {
+            //    individual.print();
+            //    System.out.println(" | score = " + fitnessScore(initialState, individual.getSequence(), heuristic));
+            //}
+            //System.out.println("==================================");
 
             // reproduction - crossover
 
@@ -211,12 +211,12 @@ public class GASolver extends Solver {
                 ++i;
             }
             
-            System.out.println("=== selection after crossover ===");
-            for (Individual individual : selection) {
-                individual.print();
-                System.out.println(" | score = " + fitnessScore(initialState, individual.getSequence(), heuristic));
-            }
-            System.out.println("==================================");
+            //System.out.println("=== selection after crossover ===");
+            //for (Individual individual : selection) {
+            //    individual.print();
+            //    System.out.println(" | score = " + fitnessScore(initialState, individual.getSequence(), heuristic));
+            //}
+            //System.out.println("==================================");
 
             // reproduction - mutation
 
@@ -237,7 +237,8 @@ public class GASolver extends Solver {
                         break;
                     case 1: // inverse
                         int position = rand.nextInt(mutant.getSequence().length);
-                        mutant.getSequence()[position] = 1 - mutant.getSequence()[position];
+                        float variation = rand.nextFloat();
+                        mutant.getSequence()[position] = (mutant.getSequence()[position] + variation) % 1;
                         break;
                     case 2: // augmentation
                         float[] augmented = new float[mutant.getSequence().length + 1];
@@ -252,13 +253,13 @@ public class GASolver extends Solver {
                 ++i;
             }
 
-            System.out.println("=== selection after mutation ===");
-            for (Individual individual : selection) {
-                individual.print();
-                System.out.println(" | score = " + 
-                    fitnessScore(initialState, individual.getSequence(), heuristic));
-            }
-            System.out.println("==================================");
+            //System.out.println("=== selection after mutation ===");
+            //for (Individual individual : selection) {
+            //    individual.print();
+            //    System.out.println(" | score = " + 
+            //        fitnessScore(initialState, individual.getSequence(), heuristic));
+            //}
+            //System.out.println("==================================");
 
             // insertion
 
@@ -301,6 +302,7 @@ public class GASolver extends Solver {
                 if (fitnessScore(initialState, individual.getSequence(), heuristic) == 0) {
                     System.out.println("solution : ");
                     individual.print();
+                    System.out.println("\nsolution length : " + individual.getSequence().length);
                     this.solution = individual.getSequence();
                     this.solutionIteration = iter;
                     found = true;
@@ -331,7 +333,7 @@ public class GASolver extends Solver {
         for (float movement : movesSequence) {
             int numberOfMoves = numberOfMovesPerTile[xi][xj];
             float interval = (float) 1 / numberOfMoves;
-            int moveIndex = (int)(movement / interval);
+            int moveIndex = (int)(movement / interval) % numberOfMoves;
             Movement move = authorizedMovesPerTile[xi][xj][moveIndex];
 
             switch (move) {
