@@ -25,6 +25,8 @@ public class GASolver extends Solver {
     private float crossoverRatio;
     private float[] solution;
     private int solutionIteration;
+    private int bestFitness;
+    private int tol;
 
     private static int[][] numberOfMovesPerTile;
     private static Movement[][][] authorizedMovesPerTile;
@@ -71,7 +73,8 @@ public class GASolver extends Solver {
     public GASolver(short[][] initialState, short[][] targetState,
             int populationSize, Heuristic heuristic, int initialSequenceLength,
             int maxIter, float selectionRatio, int numberOfCrossovers,
-            int numberOfMutations, float crossoverRatio) {
+            int numberOfMutations, float crossoverRatio,
+            int tol) {
 
         this.dimension = initialState.length;
         this.initialState = new short[dimension][dimension];
@@ -95,11 +98,13 @@ public class GASolver extends Solver {
         this.numberOfCrossovers = numberOfCrossovers;
         this.numberOfMutations = numberOfMutations;
         this.crossoverRatio = crossoverRatio;
+        this.tol = tol;
     }
 
     public void solve() {
         // initial population
         population = new LinkedList<Individual>();
+        int worstFitness = 0;
 
         Random rand = new Random(42);
         for (int i = 0; i < populationSize; ++i) {
@@ -118,13 +123,14 @@ public class GASolver extends Solver {
             }
         });
 
-        System.out.println("=== initial population === | size : " + population.size());
-        for (Individual individual : population) {
-            individual.print();
-            System.out.println(" | score = " + 
-                fitnessScore(initialState, individual.getSequence(), heuristic));
-        }
-        System.out.println("==================================");
+        worstFitness = fitnessScore(initialState, population.getLast().getSequence(), heuristic);
+        //System.out.println("=== initial population === | size : " + population.size());
+        //for (Individual individual : population) {
+        //    int fitness = fitnessScore(initialState, individual.getSequence(), heuristic);
+        //    individual.print();
+        //    System.out.println(" | score = " + fitness);
+        //}
+        //System.out.println("==================================");
         
         /**
          * boucle de recherche
@@ -142,18 +148,18 @@ public class GASolver extends Solver {
          */
         boolean found = false;
         int iter = 0;
+        int tolCpt = 0;
         final int selectionSize = (int) (populationSize * selectionRatio);
         final int samplerMax = populationSize * (populationSize + 1) / 2;
-        System.out.println("selection size : " + selectionSize + " | max sampler : " + samplerMax);
+        //System.out.println("selection size : " + selectionSize + " | max sampler : " + samplerMax);
         while (iter < maxIter && !found) {
-            System.out.println("================================== iteration n° " + iter + " ==========================");
+            // System.out.println("================================== iteration n° " + iter + " ==========================");
             
             // selection
 
             LinkedList<Individual> selection = new LinkedList<Individual>();
             while (selection.size() < selectionSize) {
                 int sampler = rand.nextInt(samplerMax);
-                //System.out.println("sampler : " + sampler);
 
                 int threshold = populationSize;
                 Iterator<Individual> iterator = population.iterator();
@@ -284,30 +290,65 @@ public class GASolver extends Solver {
                 if (i == populationSize)
                     break;
             }
-
             population = newPopulation;
 
-            System.out.println("=== final population ===");
-            for (Individual individual : population) {
-                individual.print();
-                System.out.println(" | score = " +
-                    fitnessScore(initialState, individual.getSequence(), heuristic));
-            }
-            System.out.println("==================================");
+            //System.out.println("=== final population ===");
+            //for (Individual individual : population) {
+            //    individual.print();
+            //    System.out.println(" | score = " +
+            //        fitnessScore(initialState, individual.getSequence(), heuristic));
+            //}
+            //System.out.println("==================================");
 
             ++iter;
 
             // check for solution
+            int currentWorstFitness = fitnessScore(initialState, population.getLast().getSequence(), heuristic);
             for (Individual individual : population) {
-                if (fitnessScore(initialState, individual.getSequence(), heuristic) == 0) {
-                    System.out.println("solution : ");
-                    individual.print();
-                    System.out.println("\nsolution length : " + individual.getSequence().length);
+                int fitness = fitnessScore(initialState, individual.getSequence(), heuristic);
+                if (fitness == 0) {
+                    //System.out.println("[ iteration : " + iter + " ] : solution : ");
+                    //individual.print();
+                    //System.out.println("solution length : " + individual.getSequence().length);
                     this.solution = individual.getSequence();
                     this.solutionIteration = iter;
+                    this.bestFitness = 0;
                     found = true;
                 }
             }
+
+            // check of tol
+            if (currentWorstFitness < worstFitness) {
+                tolCpt = 0;
+                worstFitness = currentWorstFitness;
+            } else if (tolCpt >= tol) {
+                tolCpt = 0;
+                // augmentation
+                //System.out.println("[ iteration : " + iter + " ] : Population best score did not impove over " + tol + " iterations, all individuals will be augmented.");
+                newPopulation = new LinkedList<Individual>();
+                for (Individual individual : population) {
+                    float[] augmented = new float[individual.getSequence().length + 1];
+                    for (int j = 0; j < individual.getSequence().length; ++j)
+                        augmented[j] = individual.getSequence()[j];
+                    augmented[augmented.length - 1] = rand.nextFloat();
+                    newPopulation.add(new Individual(augmented));
+                }
+                population = newPopulation;
+                Collections.sort(population, new Comparator<Individual>() {
+                    @Override
+                    public int compare(Individual sequence1, Individual sequence2) {
+                        return GASolver.fitnessScore(initialState, sequence1.getSequence(), heuristic)
+                            - GASolver.fitnessScore(initialState, sequence2.getSequence(), heuristic);
+                    }
+                });
+            } else {
+                ++tolCpt;
+            }
+        }
+        if (!found) {
+            this.bestFitness = fitnessScore(initialState, population.get(0).getSequence(), heuristic);
+            this.solution = population.get(0).getSequence();
+            this.solutionIteration = maxIter;
         }
     }
 
@@ -369,5 +410,15 @@ public class GASolver extends Solver {
 
         short[][] state = applySequence(initialState, movesSequence);
         return heuristic.score(state);
+    }
+
+    public int getSolutionIteration() {
+        return this.solutionIteration;
+    }
+    public float[] getSolution() {
+        return this.solution;
+    }
+    public int getBestFitness() {
+        return this.bestFitness;
     }
 }
