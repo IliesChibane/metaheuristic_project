@@ -27,6 +27,7 @@ public class GASolver extends Solver {
     private int solutionIteration;
     private int bestFitness;
     private int tol;
+    private Comparator<Individual> comparator;
 
     private static int[][] numberOfMovesPerTile;
     private static Movement[][][] authorizedMovesPerTile;
@@ -99,6 +100,15 @@ public class GASolver extends Solver {
         this.numberOfMutations = numberOfMutations;
         this.crossoverRatio = crossoverRatio;
         this.tol = tol;
+
+        this.comparator = new Comparator<Individual>() {
+            @Override
+            public int compare(Individual sequence1, Individual sequence2) {
+                int score1 = GASolver.fitnessScore(initialState, sequence1.getSequence(), heuristic);
+                int score2 = GASolver.fitnessScore(initialState, sequence2.getSequence(), heuristic);
+                return score1 != score2 ? score1 - score2 : sequence1.getSequence().length - sequence2.getSequence().length;
+            }
+        };
     }
 
     public void solve() {
@@ -115,13 +125,7 @@ public class GASolver extends Solver {
             population.add(new Individual(sequence));
         }
 
-        Collections.sort(population, new Comparator<Individual>() {
-            @Override
-            public int compare(Individual sequence1, Individual sequence2) {
-                return GASolver.fitnessScore(initialState, sequence1.getSequence(), heuristic)
-                    - GASolver.fitnessScore(initialState, sequence2.getSequence(), heuristic);
-            }
-        });
+        Collections.sort(population, comparator);
 
         worstFitness = fitnessScore(initialState, population.getLast().getSequence(), heuristic);
         //System.out.println("=== initial population === | size : " + population.size());
@@ -274,13 +278,7 @@ public class GASolver extends Solver {
                     population.add(individual);
             }
 
-            Collections.sort(population, new Comparator<Individual>() {
-                @Override
-                public int compare(Individual sequence1, Individual sequence2) {
-                    return GASolver.fitnessScore(initialState, sequence1.getSequence(), heuristic)
-                        - GASolver.fitnessScore(initialState, sequence2.getSequence(), heuristic);
-                }
-            });
+            Collections.sort(population, comparator);
             
             LinkedList<Individual> newPopulation = new LinkedList<Individual>();
             i = 0;
@@ -334,13 +332,7 @@ public class GASolver extends Solver {
                     newPopulation.add(new Individual(augmented));
                 }
                 population = newPopulation;
-                Collections.sort(population, new Comparator<Individual>() {
-                    @Override
-                    public int compare(Individual sequence1, Individual sequence2) {
-                        return GASolver.fitnessScore(initialState, sequence1.getSequence(), heuristic)
-                            - GASolver.fitnessScore(initialState, sequence2.getSequence(), heuristic);
-                    }
-                });
+                Collections.sort(population, comparator);
             } else {
                 ++tolCpt;
             }
@@ -422,3 +414,4 @@ public class GASolver extends Solver {
         return this.bestFitness;
     }
 }
+
