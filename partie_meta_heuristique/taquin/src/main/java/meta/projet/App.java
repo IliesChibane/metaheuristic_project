@@ -48,7 +48,7 @@ public class App {
     
         FileWriter results = new FileWriter("results.csv");
 
-        int choice = 2;
+        int choice = 1;
 
         switch(choice)
         {
