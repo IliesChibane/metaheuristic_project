@@ -14,7 +14,7 @@
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
         <maven.compiler.source>1.8</maven.compiler.source>
         <maven.compiler.target>1.8</maven.compiler.target>
-        <exec.mainClass>meta.projet.ihm.UI</exec.mainClass>
+        <exec.mainClass>meta.projet.ihm.BAR</exec.mainClass>
     </properties>
 
     <build>
@@ -27,7 +27,7 @@
                     <archive>
                         <manifest>
                             <addClasspath>true</addClasspath>
-                            <mainClass>meta.projet.ihm.UI</mainClass>
+                            <mainClass>meta.projet.ihm.BAR</mainClass>
                         </manifest>
                     </archive>
                 </configuration>
