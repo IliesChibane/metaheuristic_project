@@ -65,7 +65,7 @@ public class BAR extends JFrame{
 		contentPane.setLayout(null);
 		this.setUndecorated(true);
 		
-		JLabel label = new JLabel("Résolution en cours");
+		JLabel label = new JLabel("Resolution en cours");
 		label.setForeground(Color.WHITE);
 		label.setFont(new Font("Tahoma", Font.BOLD, 30));
 		label.setBounds(67, 50, 314, 37);
