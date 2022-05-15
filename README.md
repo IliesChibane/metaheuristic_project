@@ -11,5 +11,3 @@ This project is made by the quadrinomial :
 ### Chibane Ilies
 
 ### Hammal Ayoub
-
-**SCRUM Board link :** [scrumblr - Projet Meta](http://scrumblr.ca/Projet%20Meta)
