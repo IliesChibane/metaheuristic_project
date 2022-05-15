@@ -55,14 +55,14 @@ public class UI extends Thread{
             527804361 // 30
         };
         private short[][] targetState = {{1, 2, 3}, {8, 0, 4}, {7, 6, 5}};
-        private int[] populationSizesGA = {10, 50, 100};
-        private int[] numberOfCrossovers = {20, 30, 50};
-        private int[] numberOfMutations = {20, 50, 100, 150};
-        private int[] tolerancesGA = {30, 60, 100};
+        private int[] populationSizesGA = {50,10,10,10,10,10,50,50};
+        private int[] numberOfCrossovers = {50,50,50,50,50,50,50,50};
+        private int[] numberOfMutations = {150,100,150,150,100,100,100,50};
+        private int[] tolerancesGA = {60,30,30,30,30,100,100,100};
     
-        private int[] populationSizesPSO = {10, 100, 200, 500, 1000};
+        private int[] populationSizesPSO = {100,1000,1000,1000,1000,1000,500,1000};
     
-        private int[] tolerancesPSO = {3, 5, 7, 10};
+        private int[] tolerancesPSO = {7,7,5,7,10,7,10,10};
     
         private long startTime, endTime;
         private JTable table;
@@ -131,69 +131,45 @@ public class UI extends Thread{
 			dtm = setUpTable(table, header, tooltip);
 
 			 for (int i = 0; i < initialStates.length; ++i) {
-	             for (int j = 0; j < populationSizesGA.length; ++j) {
-	                 for (int k = 0; k < numberOfCrossovers.length; ++k) {
-	                     for (int l = 0; l < numberOfMutations.length; ++l) {
-	                         for (int m = 0; m < tolerancesGA.length; ++m) {
+	                         
 	                             GASolver solver = new GASolver(
 	                                 initialStates[i], // initialState
 	                                 targetState, // targetState
-	                                 populationSizesGA[j], // populationSize
+	                                 populationSizesGA[i], // populationSize
 	                                 new MinMoves(), // heuristic
 	                                 1, // initialSequenceLength
 	                                 5000, // maxIter
 	                                 0.5f, // selectionRation
-	                                 numberOfCrossovers[k], // numberOfCrossovers
-	                                 numberOfMutations[l], // numberOfMutations
+	                                 numberOfCrossovers[i], // numberOfCrossovers
+	                                 numberOfMutations[i], // numberOfMutations
 	                                 0.5f, // crossoverRatio
-	                                 tolerancesGA[m] // tolerance 
+	                                 tolerancesGA[i] // tolerance 
 	                             );
 	                       
 	                             
 	                             startTime = System.nanoTime();
 	                             solver.solve();
 	                             endTime = System.nanoTime();
-
-	                            /* System.out.println(initialStatesInt[i] + "; " +
-	                                 solutionsLengths[i] + "; " +
-	                                 populationSizesGA[j] + "; " +
-	                                 "1; " +
-	                                 "5000; " +
-	                                 "0.5; " +
-	                                 numberOfCrossovers[k] + "; " +
-	                                 numberOfMutations[l] + "; " +
-	                                 "0.5; " +
-	                                 tolerancesGA[m] + "; " +
-	                                 solver.getBestFitness() + "; " +
-	                                 solver.getSolutionIteration() + "; " +
-	                                 solver.getSolution().length + "; " +
-	                                 (endTime - startTime)
-	                             );*/
-	                             
-	                             
-	                             dtm.addRow(new Object[]{initialStatesInt[i], solutionsLengths[i],populationSizesGA[j],"1","5000",numberOfCrossovers[k],numberOfMutations[l],"0.5",tolerancesGA[m],solver.getBestFitness(),solver.getSolutionIteration(),solver.getSolution().length,(endTime - startTime)});
+	                            
+	                             dtm.addRow(new Object[]{initialStatesInt[i], solutionsLengths[i],populationSizesGA[i],"1","5000",numberOfCrossovers[i],numberOfMutations[i],"0.5",tolerancesGA[i],solver.getBestFitness(),solver.getSolutionIteration(),solver.getSolution().length,(endTime - startTime)});
 
 	                             
 	                          
 									resultsGA.write(initialStatesInt[i] + "; " +
 									     solutionsLengths[i] + "; " +
-									     populationSizesGA[j] + "; " +
+									     populationSizesGA[i] + "; " +
 									     "1; " +
 									     "5000; " +
 									     "0.5; " +
-									     numberOfCrossovers[k] + "; " +
-									     numberOfMutations[l] + "; " +
+									     numberOfCrossovers[i] + "; " +
+									     numberOfMutations[i] + "; " +
 									     "0.5; " +
-									     tolerancesGA[m] + "; " +
+									     tolerancesGA[i] + "; " +
 									     solver.getBestFitness() + "; " +
 									     solver.getSolutionIteration() + "; " +
 									     solver.getSolution().length + "; " +
 									     (endTime - startTime) + "\n"
 									 );
-	                         }
-	                     }
-	                 }
-	             }
 	         }
 	       
 				resultsGA.close();
@@ -206,8 +182,6 @@ public class UI extends Thread{
 		
 		FileWriter resultsPSO = new FileWriter("resultsPSO.csv");
 		
-
-        //System.out.println("initial state; best solution length; initial sequence length; max iterations; number of particles; w; c1; c2; initial velocity; tolerance; solution best fitness; solution iteration; solution length; execution time");
         resultsPSO.write("initial state; best solution length; initial sequence length; max iterations; number of particles; w; c1; c2; initial velocity; tolerance; solution best fitness; solution iteration; solution length; execution time\n");
 		String header1 [] = {"Init state","Best Solu len","Init seq len","Max iter","NB particles","w","C1", "C2", "Init velocity", "Tolerance", "solu best fit","solu iter","solu len","exe time (ns)" };
 		String tooltip1 [] = { "initial state ", "best solution length ", "initial sequence length ", "max iterations ", "number of particles ", "w ", "c1 ", "c2 ", "initial velocity ", "tolerance ", "solution best fitness ", "solution iteration ", "solution length ", "execution time "}; 
@@ -215,53 +189,33 @@ public class UI extends Thread{
 
 		 for (int i = 0; i < initialStates.length; ++i) 
 	        {
-	            for (int j = 0; j < populationSizesPSO.length; ++j) 
-	            {
-	                for (int k = 0; k < tolerancesPSO.length; ++k) 
-	                {
-	                    PSOSolver s = new PSOSolver(initialStates[i], targetState, 30.0f, 1.5f, 1.0f, 500, populationSizesPSO[j], (float)1, tolerancesPSO[k]);
+	                    PSOSolver s = new PSOSolver(initialStates[i], targetState, 30.0f, 1.5f, 1.0f, 500, populationSizesPSO[i], (float)1, tolerancesPSO[i]);
 	    
 	                    startTime = System.nanoTime();
 	                    s.solve();
 	                    endTime = System.nanoTime();
-	    
-	                  /*  System.out.println(initialStatesInt[i] + "; " +
-	                                    solutionsLengths[i] + "; " +
-	                                    "5; " +
-	                                    "500; " +
-	                                    populationSizesPSO[j] + "; " +
-	                                    "30; " +
-	                                    "1.5; " +
-	                                    "1; " +
-	                                    "1; " +
-	                                    tolerancesPSO[k] + "; " +
-	                                    s.getCurrentBestEvaluation() + "; " +
-	                                    s.getSolutionIteration() + "; " +
-	                                    s.getSequenceSize() + "; " +
-	                                    (endTime - startTime)
-	                                    );   */
-	    
+	                    
 	                    resultsPSO.write(initialStatesInt[i] + ", " +
 	                                    solutionsLengths[i] + ", " +
 	                                    "5, " +
 	                                    "500, " +
-	                                    populationSizesPSO[j] + ", " +
+	                                    populationSizesPSO[i] + ", " +
 	                                    "30, " +
 	                                    "1.5, " +
 	                                    "1, " +
 	                                    "1, " +
-	                                    tolerancesPSO[k] + ", " +
+	                                    tolerancesPSO[i] + ", " +
 	                                    s.getCurrentBestEvaluation() + ", " +
 	                                    s.getSolutionIteration() + ", " +
 	                                    s.getSequenceSize() + ", " +
 	                                    (endTime - startTime) + "\n"
 	                                    );             
 	                    
-	                    dtmm.addRow(new Object[]{initialStatesInt[i], solutionsLengths[i],"5","1","500",populationSizesPSO[j],"30","1.5","1","1",tolerancesPSO[k],s.getCurrentBestEvaluation(),s.getSolutionIteration(),s.getSequenceSize(),(endTime - startTime)});
+	                    dtmm.addRow(new Object[]{initialStatesInt[i], solutionsLengths[i],"5","500",populationSizesPSO[i],"30","1.5","1","1",tolerancesPSO[i],s.getCurrentBestEvaluation(),s.getSolutionIteration(),s.getSequenceSize(),(endTime - startTime)});
 
 	    
-	                }
-	            }
+	                
+	            
 	        }
 	        resultsPSO.close();
         table_1.setModel(dtmm);
@@ -352,7 +306,6 @@ public class UI extends Thread{
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
 		try {
 			solutionGA();
 			solutionPSO();
@@ -366,7 +319,6 @@ public class UI extends Thread{
 			}			
 
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 		
